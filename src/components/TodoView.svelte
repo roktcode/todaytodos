@@ -225,10 +225,11 @@
 
 	li button {
 		margin: 0;
-		background: teal;
-		color: white;
-		outline: none;
+		/* background: teal; */
 		border: none;
+		border: 1px solid teal;
+		color: teal;
+		outline: none;
 		transition: all 0.2s;
 		width: 100%;
 	}
@@ -236,6 +237,8 @@
 	li button:hover {
 		opacity: 0.9;
 		cursor: pointer;
+		background: teal;
+		color: white;
 	}
 
 	.todo-list {
