@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&display=swap');
 
 * {
 	box-sizing: border-box;
@@ -15,9 +17,9 @@ body {
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Noto Sans Mono', monospace;
 	min-height: 100vh;
-	background: #eee;
+	background: #fefefe;
 }
 
 a {

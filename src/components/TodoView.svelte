@@ -2,6 +2,8 @@
 	import { flip } from "svelte/animate";
 	import { fade, fly } from "svelte/transition";
 	import { onMount } from "svelte";
+	import { tweened } from "svelte/motion";
+	import { bounceIn } from "svelte/easing";
 
 	// load todos from localStorage before compnent renders
 	onMount(() => {
@@ -68,27 +70,27 @@
 
 	let completedTodos = 0;
 	let pendingTodos = 0;
-	let progress = 0;
+	let progress = tweened(0, {
+		duration: 300,
+		delay: 0,
+		easing: bounceIn,
+	});
 
 	$: {
 		completedTodos = todoList
 			.map((todo) => todo.completed)
 			.filter((c) => c).length;
 
-		console.log("hi");
-
 		pendingTodos = todoList.length - completedTodos;
-		progress =
+		progress.set(
 			todoList.length > 0
 				? Math.trunc((completedTodos / todoList.length) * 100) || 0
-				: 100;
+				: 100
+		);
 	}
 </script>
 
 <div class="container">
-	<div class="title">
-		<h3>Today Todos <span>v1.0.0</span></h3>
-	</div>
 	<div class="stats-container">
 		<div class="stats-title">STATS</div>
 		<div class="stats">
@@ -97,13 +99,12 @@
 				{completedTodos} ✅
 			</div>
 			<div class="pendinng">{pendingTodos} ⏳</div>
-			<div class="progress">{progress}% 🏃🏼</div>
+			<div class="progress">{Math.trunc($progress)}% 🚀</div>
 		</div>
 	</div>
 
 	<div class="add-todos">
 		<div class="todo-input">
-			<!-- <label id="addLabel" for="addTodo">📝 Add new item</label> -->
 			<form on:submit|preventDefault={addTodo} class="input">
 				<input
 					type="text"
@@ -111,7 +112,7 @@
 					bind:this={todoInputRef}
 					bind:value={todoInput}
 					autocomplete="off"
-					placeholder="What are you up to?"
+					placeholder="what are you up to?"
 					maxlength="20"
 					required
 				/>
@@ -150,7 +151,6 @@
 							<button on:click={() => removeTodo(id)}>Remove</button>
 						</div>
 						<!-- <div class="content-container">
-
 					</div> -->
 					</li>
 				{/each}
@@ -160,27 +160,6 @@
 </div>
 
 <style>
-	.container {
-		max-width: 800px;
-		min-width: 400px;
-		margin: 0 auto;
-		padding: 2rem 1rem;
-	}
-
-	.title {
-		display: flex;
-		justify-content: center;
-		max-width: 400px;
-		/* background: #aaa; */
-		color: #333;
-		margin: 0 auto 3rem;
-	}
-
-	.title span {
-		font-size: 0.75rem;
-		opacity: 0.5;
-	}
-
 	.todo-input {
 		display: flex;
 		flex-direction: column;
@@ -194,33 +173,47 @@
 		user-select: none;
 		font-weight: bold;
 		display: flex;
-		padding-left: 0.5rem;
 		/* padding: 0.5rem 0; */
 		/* flex-direction: column; */
 		justify-content: space-between;
+		gap: 4px;
 		align-items: center;
-		max-width: 400px;
+		/* max-width: 400px; */
 		/* border: 1px solid teal; */
 		border-radius: 5px;
 		transition: all 0.2s;
 	}
-
-	li:hover {
-		background: #ddd;
-		box-shadow: 1px 2px 3px #eee;
-	}
-
 	.content-container {
 		display: flex;
+		justify-content: flex-start;
+		align-items: baseline;
+		overflow-wrap: break-word;
+
+		padding: 0 1rem;
 		/* justify-content: space-between; */
-		align-items: center;
 		font-size: 1.2rem;
 		flex-grow: 1;
+		transition: all 0.2s;
+		/* max-width: 290px; */
+		overflow-wrap: break-word;
 	}
+
+	li .content-container:hover {
+		background: #ddd;
+		box-shadow: 1px 2px 3px #eee;
+		display: flex;
+	}
+
 	li .content {
+		flex-grow: 1;
 		padding: 0.5rem 1rem;
 		overflow-wrap: break-word;
-		max-width: 309px;
+		max-width: 100%;
+		/* max-width: 300px; */
+	}
+
+	li .content:hover {
+		text-decoration: line-through;
 	}
 
 	.content-prefix {
@@ -232,15 +225,12 @@
 
 	li button {
 		margin: 0;
-		background: tomato;
+		background: teal;
 		color: white;
 		outline: none;
 		border: none;
 		transition: all 0.2s;
-		/* font-size: 1.5rem; */
 		width: 100%;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
 	}
 
 	li button:hover {
@@ -262,16 +252,20 @@
 		width: 100%;
 		padding: 0.5rem;
 		outline: none;
-		/* border: 1px solid teal; */
 		text-align: center;
-		font-size: 1.2rem;
 		font-weight: bold;
-		font-size: 2rem;
+		font-size: 1.6rem;
+		border: none;
+		border-bottom: 2px solid lightcoral;
 	}
 
 	input::placeholder {
 		opacity: 0.5;
-		font-weight: normal;
+		font-weight: lighter;
+		font-size: 1.5rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.add-todos {
@@ -287,33 +281,38 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: stretch;
+		align-items: center;
 	}
 
 	.input button {
-		color: teal;
-		border: 2px solid teal;
+		/* border: 1px solid teal; */
+		border: none;
 		border-radius: 5px;
-		/* color: white; */
+		color: white;
+		background: lightcoral;
 		cursor: pointer;
 		transition: all 0.15s;
 		font-size: 1.4rem;
+		width: 150px;
 	}
 
 	.input button:hover {
-		/* opacity: 0.9; */
-		background: teal;
-		color: white;
-	}
+		opacity: 0.9;
+		transform: scaleX(1.1);
 
-	/* #addLabel {
-		margin: 1rem 0;
-	} */
+		/* background: teal; */
+		/* color: white; */
+	}
 
 	.content.completed {
 		text-decoration: line-through;
+		text-decoration-style: double;
 		font-weight: normal;
 		color: teal;
+	}
+
+	.content.completed:hover {
+		text-decoration: none;
 	}
 
 	.todo-list {
@@ -328,10 +327,12 @@
 		align-items: stretch;
 		padding: 1rem;
 		margin: 2rem auto;
-		color: #ccc;
-		background: #333;
+		color: black;
+		/* background: lightcoral; */
+		/* background: #ccc; */
+		background: linear-gradient(270deg, #ddd, #eee);
 		border-radius: 5px;
-		box-shadow: 1px 2px 4px #666;
+		/* box-shadow: 1px 2px 4px #666; */
 		gap: 1rem;
 		max-width: 400px;
 	}
@@ -341,7 +342,7 @@
 		justify-content: center;
 		font-weight: bold;
 		font-size: 1.1rem;
-		color: #eee;
+		color: black;
 	}
 
 	.stats {
@@ -350,6 +351,7 @@
 		gap: 50px;
 		justify-content: center;
 		/* align-items: center; */
+		/* font-weight: bold; */
 	}
 
 	.empty-todos {
@@ -371,10 +373,6 @@
 			max-width: 360px;
 		}
 
-		.title {
-			max-width: 360px;
-		}
-
 		.add-todos {
 			max-width: 350px;
 		}
@@ -389,6 +387,10 @@
 
 		.todo-list {
 			max-width: 360px;
+		}
+
+		.content-container {
+			max-width: 250px;
 		}
 	}
 </style>
