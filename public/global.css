@@ -4,10 +4,10 @@
 	transition: background;
 } */
 
-:root {
+html[data-theme="light"] {
 	--bg-color: #fefefe;
 	--text-color: #333;
-	--navbar-bg-color: #ddd;
+	--navbar-bg-color: #ededed;
 	--navbar-text-color: #333;
 	--li-hover-color: #ddd;
 	--li-hover-box-shadow-color: #eee;
@@ -32,10 +32,10 @@
 	--footer-link-color: blue;
 	--input-bg-color: none;
 	--navbar-box-shadow-color: #eee;
-	--dark-switch-bg-color: teal;
+	--dark-switch-bg-color: lightcoral;
 }
 
-.dark {
+html[data-theme="dark"] {
 	--bg-color: #333;
 	--text-color: #fefefe;
 	--navbar-bg-color: #222;
@@ -45,7 +45,7 @@
 	--li-completed-text-color: lightcoral;
 	--li-action-color: lightcoral;
 	--li-action-hover-text-color: black;
-	--input-button-bg-color: none;
+	--input-button-bg-color: var(--bg-color);
 	--input-border-color: teal;
 	--input-border: 2px solid var(--input-border-color);
 	--input-text-indicator-color: white;
@@ -62,7 +62,7 @@
 	--footer-link-color: yellow;
 	--input-bg-color: none;
 	--navbar-box-shadow-color: #333;
-	--dark-switch-bg-color: lightcoral;
+	--dark-switch-bg-color: teal;
 }
 
 * {

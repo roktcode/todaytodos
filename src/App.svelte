@@ -4,15 +4,16 @@
 	import Footer from "./components/Footer.svelte";
 	import { onMount } from "svelte";
 
-	function loadTheme() {
-		const isDark = localStorage.getItem("isDarkMode");
-		if (isDark) {
-			const json = JSON.parse(isDark);
-			if (json === true) document.body.classList.add('dark')
-		}
-	}
+	// function loadTheme() {
+	// 	const isDark = localStorage.getItem("isDarkMode");
+	// 	if (isDark) {
+	// 		const json = JSON.parse(isDark);
+	// 		if (json === true)
+	// 			document.documentElement.setAttribute("data-theme", "dark");
+	// 	}
+	// }
 
-	onMount(() => loadTheme());
+	// onMount(() => loadTheme());
 </script>
 
 <div class="grid">

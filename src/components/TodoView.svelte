@@ -222,6 +222,10 @@
 		font-size: 1.4rem;
 		width: 150px;
 		font-weight: bold;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0;
 	}
 
 	.input button:hover {

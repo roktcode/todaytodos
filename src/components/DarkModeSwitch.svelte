@@ -13,20 +13,26 @@
 	});
 
 	function toggleDarkMode() {
-		document.body.classList.toggle("dark");
+		// document.body.classList.toggle("dark");
+		document.documentElement.setAttribute(
+			"data-theme",
+			isDarkMode ? "dark" : "light"
+		);
 		localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
 	}
 </script>
 
 <div class="switch">
 	<div class="switch-text">Light</div>
-	<div><input
-		type="checkbox"
-		bind:checked={isDarkMode}
-		on:change={toggleDarkMode}
-		id="switch"
-		name="theme"
-	/><label for="switch">Toggle</label></div>
+	<div>
+		<input
+			type="checkbox"
+			bind:checked={isDarkMode}
+			on:change={toggleDarkMode}
+			id="switch"
+			name="theme"
+		/><label for="switch">Toggle</label>
+	</div>
 	<div class="switch-text">Dark</div>
 </div>
 
