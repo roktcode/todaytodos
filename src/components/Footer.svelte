@@ -9,6 +9,7 @@
 		align-items: center;
     text-align: center;
     margin-top: 100px;
+		font-size: 0.8rem;
 	}
 
 	footer a {

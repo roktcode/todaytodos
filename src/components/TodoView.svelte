@@ -327,6 +327,7 @@
 		align-items: stretch;
 		padding: 1rem;
 		margin: 2rem auto;
+		margin-bottom: 4rem;
 		color: black;
 		/* background: lightcoral; */
 		/* background: #ccc; */
@@ -358,7 +359,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-top: 2rem;
+		margin-top: 5rem;
 	}
 
 	/* MEDIA QUERSIS */
