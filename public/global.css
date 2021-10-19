@@ -1,29 +1,96 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&display=swap");
+/* 
+* {
+	transition: background;
+} */
+
+:root {
+	--bg-color: #fefefe;
+	--text-color: #333;
+	--navbar-bg-color: #ddd;
+	--navbar-text-color: #333;
+	--li-hover-color: #ddd;
+	--li-hover-box-shadow-color: #eee;
+	--li-completed-text-color: teal;
+	--li-action-color: rgba(0, 128, 128, 0.8);
+	--li-action-hover-text-color: white;
+	--input-button-bg-color: lightcoral;
+	--input-border-color: lightcoral;
+	--input-border: none;
+	--input-text-indicator-color: black;
+	--input-placeholder-text-color: #ddd;
+	--input-button-hover-color: #f06060;
+	--input-text-color: black;
+	--input-button-border: 3px solid var(--input-button-bg-color);
+	--input-button-hover-border-color: var(--bg-color);
+	--stats-bg-color: black;
+	--stats-text-color: var(--bg-color);
+	--stats-container-border: 1px solid var(--bg-color);
+	--stats-border-radius: none;
+	--li-hover-text-color: rgb(46, 53, 53);
+	--li-completed-hover-text-color: var(--text-color);
+	--footer-link-color: blue;
+	--input-bg-color: none;
+	--navbar-box-shadow-color: #eee;
+	--dark-switch-bg-color: teal;
+}
+
+.dark {
+	--bg-color: #333;
+	--text-color: #fefefe;
+	--navbar-bg-color: #222;
+	--navbar-text-color: #eee;
+	--li-hover-color: #444;
+	--li-hover-box-shadow-color: #333;
+	--li-completed-text-color: lightcoral;
+	--li-action-color: lightcoral;
+	--li-action-hover-text-color: black;
+	--input-button-bg-color: none;
+	--input-border-color: teal;
+	--input-border: 2px solid var(--input-border-color);
+	--input-text-indicator-color: white;
+	--input-text-color: white;
+	--input-button-hover-color: #009090;
+	--input-button-border: 3px solid teal;
+	--input-button-hover-border-color: var(--bg-color);
+	--stats-bg-color: none;
+	--stats-text-color: #ddd;
+	--stats-container-border: 1px solid #ddd;
+	--stats-border-radius: none;
+	--li-hover-text-color: lightcoral;
+	--li-completed-hover-text-color: var(--text-color);
+	--footer-link-color: yellow;
+	--input-bg-color: none;
+	--navbar-box-shadow-color: #333;
+	--dark-switch-bg-color: lightcoral;
+}
 
 * {
 	box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
 	position: relative;
 	width: 100%;
 	height: 100%;
 }
 
 body {
-	color: #333;
 	margin: 0;
-	padding: 8px;
+	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Noto Sans Mono', monospace;
+	font-family: "Noto Sans Mono", monospace;
 	min-height: 100vh;
-	background: #fefefe;
+	background: var(--bg-color);
+	color: var(--text-color);
+	/* transition: background 0.3s; */
+	/* background-color: #d9afd9;
+	background-image: linear-gradient(90deg, #d9afd9 0%, #97d9e1 100%); */
 }
 
 a {
-	color: rgb(0,100,200);
+	color: rgb(0, 100, 200);
 	text-decoration: none;
 }
 
@@ -32,14 +99,17 @@ a:hover {
 }
 
 a:visited {
-	color: rgb(0,80,160);
+	color: rgb(0, 80, 160);
 }
 
 label {
 	display: block;
 }
 
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
 	font-family: inherit;
 	font-size: inherit;
 	-webkit-padding: 0.4em 0;

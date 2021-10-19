@@ -5,6 +5,9 @@ The app is currently using localStorage, which is deletd if you delete your brow
 The next days, I will try make some improvents and add more features, I don;t promise though :d
 
 TODO:
-- [] add a navbar
-- [] add register and login
-- [] add a way to save your todos online
+- [ ] * add a navbar
+- [ ] add register and login
+- [ ] add a way to save your todos online
+- [ ] add sorting option
+- [ ] add drag and drop todos
+- [ ] add sharing todos

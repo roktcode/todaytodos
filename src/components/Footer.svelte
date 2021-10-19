@@ -1,5 +1,9 @@
 <footer>
-	<p>Developed by <a target="_blank" href="https://roktlandr.vercel.app">Muhammad Yasser</a> at the 2021</p>
+	<p>
+		Developed by <a target="_blank" href="https://roktlandr.vercel.app"
+			>Muhammad Yasser</a
+		> at the 2021
+	</p>
 </footer>
 
 <style>
@@ -7,12 +11,15 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-    text-align: center;
-    margin-top: 100px;
+		text-align: center;
+		margin-top: 100px;
 		font-size: 0.8rem;
+		padding: 1rem;
 	}
 
 	footer a {
 		text-decoration: underline;
+
+		color: var(--footer-link-color);
 	}
 </style>
