@@ -92,7 +92,7 @@
 
 <div class="container">
 	<div class="stats-container">
-		<div class="stats-title">PROGRESS 🚀 {Math.trunc($progress)}%</div>
+		<div class="stats-title">🚀 PROGRESS {Math.trunc($progress)}%</div>
 		<div class="stats">
 			<div class="total">{todoList.length} TOTAL</div>
 			<div class="completed">
@@ -105,62 +105,110 @@
 
 	<div class="add-todos">
 		<div class="todo-input">
-			<form on:submit|preventDefault={addTodo} class="input">
-				<input
-					type="text"
-					id="addTodo"
-					bind:this={todoInputRef}
-					bind:value={todoInput}
-					autocomplete="off"
-					placeholder="📝 what are you up to?"
-					maxlength="50"
-					required
-				/>
-				<button type="submit">ADD</button>
-			</form>
+			<div class="form">
+				<form on:submit|preventDefault={addTodo} class="input">
+					<input
+						type="text"
+						id="addTodo"
+						bind:this={todoInputRef}
+						bind:value={todoInput}
+						autocomplete="off"
+						placeholder="📝 what are you up to?"
+						maxlength="50"
+						required
+					/>
+				</form>
+			</div>
+			<div class="submit">
+				<button type="submit" on:click={addTodo}>ADD</button>
+			</div>
 		</div>
 	</div>
 
-	{#if todoList.length === 0}
+	<!-- {#if todoList.length === 0}
 		<div class="empty-todos">
 			<p>No todos yet 📭</p>
 		</div>
-	{:else}
-		<div class="todo-list">
-			<ul>
-				{#each todoList as { id, text, completed }, idx (id)}
-					<li
-						animate:flip
-						in:fade
-						out:fly={{ x: 100 }}
-						on:click={() => toggleCompleted(id)}
-					>
-						<div class="content-container">
-							<div class="content-prefix">
-								{#if completed}
-									✔
-								{:else}
-									⏳
-								{/if}
-							</div>
-							<div class="content" class:completed>
-								{text}
-							</div>
+	{:else} -->
+	<div class="todo-list">
+		<ul>
+			{#each todoList as { id, text, completed }, idx (id)}
+				<li
+					animate:flip
+					in:fade
+					out:fly={{ x: 100 }}
+					on:click={() => toggleCompleted(id)}
+				>
+					<div class="content-container">
+						{#if completed}
+							<div class="content-prefix">✔</div>
+						{/if}
+						<div class="content" class:completed>
+							<p>{text}</p>
 						</div>
-						<div class="actions">
-							<button on:click={() => removeTodo(id)}>Remove</button>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		</div>
-	{/if}
+					</div>
+					<div class="actions">
+						<button on:click={() => removeTodo(id)}>Remove</button>
+					</div>
+				</li>
+			{/each}
+		</ul>
+	</div>
+	<!-- {/if} -->
 </div>
 
 <style>
 	.container {
 		padding: 0 1.5rem;
-		max-width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 350px;
+		width: 100%;
+		margin: 0 auto;
+	}
+
+	.stats-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: stretch;
+		padding: 0.5rem;
+		margin: 1rem auto;
+		margin-bottom: 2rem;
+		color: var(--stats-text-color);
+		background: var(--stats-bg-color);
+		border-radius: var(--stats-border-radius);
+		gap: 1rem;
+		max-width: 250px;
+		border: var(--stats-container-border);
+		box-shadow: var(--stats-container-box-shadow);
+	}
+
+	.stats-title {
+		display: flex;
+		justify-content: center;
+		font-weight: bold;
+		font-size: 1rem;
+		color: white;
+	}
+
+	.stats {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+		justify-content: center;
+		/* align-items: center; */
+		/* font-weight: bold; */
+	}
+
+	.add-todos {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: stretch;
+		margin: 1rem 0;
+		width: 100%;
 	}
 
 	.todo-input {
@@ -170,16 +218,21 @@
 		justify-content: center;
 	}
 
+	.submit {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
 	input {
 		width: 100%;
-		padding: 0.8rem 0.5rem;
 		outline: none;
 		text-align: center;
 		font-weight: bold;
-		font-size: 1.6rem;
+		font-size: 1.2rem;
 		border: none;
 		border: var(--input-border);
-		border-bottom: 2px solid var(--input-border-color);
+		border-bottom: 1px solid var(--input-border-color);
 		background: var(--input-bg-color);
 		caret-color: var(--input-text-indicator-color);
 		color: var(--input-text-color);
@@ -189,102 +242,79 @@
 		/* color: #ccc; */
 		opacity: 0.5;
 		font-weight: lighter;
-		font-size: 1.5rem;
+		font-size: 1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
-
-	.add-todos {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
-		margin: 0 auto;
-		max-width: 600px;
 	}
 
 	.input {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
+		align-items: flex-end;
 	}
 
-	.input button {
-		/* border: 1px solid teal; */
+	.todo-input button {
 		border: var(--input-button-border);
 		border-radius: 5px;
 		color: white;
 		background: var(--input-button-bg-color);
 		cursor: pointer;
 		transition: all 0.15s;
-		font-size: 1.4rem;
-		width: 150px;
+		font-size: 1rem;
+		width: 80px;
+		height: 35px;
 		font-weight: bold;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0;
+		margin: 0.5rem 0;
 	}
 
-	.input button:hover {
+	.todo-input button:hover {
 		background: var(--input-button-hover-color);
 		border-color: var(--input-button-hover-border-color);
 	}
 
 	.todo-list {
-		max-width: 600px;
-		margin: 0 auto;
+		width: 100%;
 	}
 
 	ul {
 		padding: 0;
 		list-style-position: inside;
+		width: 100%;
 	}
 
 	li {
-		margin-bottom: 1.5rem;
 		cursor: pointer;
 		user-select: none;
 		font-weight: bold;
 		display: flex;
-		justify-content: space-between;
-		gap: 4px;
+		justify-content: stretch;
 		align-items: center;
+		gap: 0.5rem;
 		border-radius: 5px;
 		transition: all 0.2s;
 	}
 
 	.content-container {
 		display: flex;
-		justify-content: flex-start;
+		justify-content: stretch;
 		align-items: baseline;
-		overflow-wrap: break-word;
-		padding-left: 0.5rem;
-		font-size: 1.2rem;
-		flex-grow: 1;
+		font-size: 1.3rem;
 		transition: all 0.2s;
-		overflow-wrap: break-word;
-		max-width: 500px;
+		flex-grow: 1;
+		min-width: 0;
+		gap: 0.5rem;
 	}
 
-	li .content-container:hover {
+	.content-container:hover {
 		background: var(--li-hover-color);
 		box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
 		display: flex;
 		color: var(--li-hover-text-color);
-	}
-
-	li .content {
-		flex-grow: 1;
-		padding: 0.5rem 1rem;
-		overflow-wrap: break-word;
-		max-width: 100%;
-	}
-
-	li .content:hover {
-		text-decoration: line-through;
 	}
 
 	.content-prefix {
@@ -292,6 +322,20 @@
 		height: 20px;
 		color: var(--li-completed-text-color);
 		/* flex-grow: 1; */
+	}
+
+	.content {
+		flex-grow: 1;
+		/* padding: 0.5rem 1rem; */
+		min-width: 0;
+	}
+
+	.content p {
+		overflow-wrap: break-word;
+	}
+
+	.content:hover {
+		text-decoration: line-through;
 	}
 
 	li button {
@@ -302,7 +346,7 @@
 		color: var(--li-action-color);
 		outline: none;
 		transition: all 0.2s;
-		width: 100%;
+		font-size: 0.8rem;
 	}
 
 	li button:hover {
@@ -315,7 +359,7 @@
 
 	.content.completed {
 		text-decoration: line-through;
-		text-decoration-style: double;
+		/* text-decoration-style: double; */
 		font-weight: normal;
 		color: var(--li-completed-text-color);
 	}
@@ -325,79 +369,76 @@
 		color: var(--li-completed-hover-text-color);
 	}
 
-	.stats-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
-		padding: 1rem;
-		margin: 1rem auto;
-		margin-bottom: 4rem;
-		color: var(--stats-text-color);
-		background: var(--stats-bg-color);
-		border-radius: var(--stats-border-radius);
-		gap: 1rem;
-		max-width: 300px;
-		border: var(--stats-container-border);
-	}
-
-	.stats-title {
-		display: flex;
-		justify-content: center;
-		font-weight: bold;
-		font-size: 1.1rem;
-		color: white;
-	}
-
-	.stats {
-		display: flex;
-		flex-direction: row;
-		gap: 2rem;
-		justify-content: center;
-		/* align-items: center; */
-		/* font-weight: bold; */
-	}
-	.empty-todos {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-top: 5rem;
-	}
-
-	/* MEDIA QUERSIS */
-
-	@media (max-width: 320px) {
+	@media (min-width: 400px) and (max-width: 600px) {
 		.container {
-			max-width: 320px;
-			/* padding: 1rem 0.5rem; */
+			max-width: 450px;
 		}
 
-		.add-todos {
-			max-width: 340px;
+		li button {
+			font-size: 0.9rem;
+		}
+	}
+
+	@media (min-width: 601px) and (max-width: 700px) {
+		.container {
+			max-width: 500px;
+		}
+
+		input {
+			font-size: 1.4rem;
+		}
+
+		li button {
+			font-size: 1rem;
+		}
+	}
+
+	@media (min-width: 701px) {
+		.container {
+			max-width: 600px;
+		}
+
+		.add-todos button {
+			width: 100px;
+			height: 42px;
+		}
+
+		li button {
+			font-size: 1rem;
+		}
+
+		input {
+			font-size: 1.6rem;
+		}
+
+		input::placeholder {
+			font-size: 1.2rem;
+		}
+
+		.todo-input {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 1rem;
+			/* justify-content: ; */
+		}
+
+		.form {
+			flex-grow: 1;
+		}
+	}
+
+	@media (min-width: 601px) {
+		.content-container {
+			gap: 1rem;
+		}
+
+		li {
+			gap: 1rem;
 		}
 
 		.stats-container {
-			max-width: 320px;
-		}
-
-		.stats {
-			text-align: center;
-		}
-
-		.todo-list {
-			max-width: 320px;
-		}
-
-		.content-container {
-			max-width: 200px;
-			font-size: 1rem;
-		}
-
-		.content {
-			max-width: 100%;
-		}
-		input::placeholder {
-			font-size: 1rem;
+			padding: 1rem;
 		}
 	}
 </style>

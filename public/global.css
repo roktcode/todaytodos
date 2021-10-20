@@ -1,8 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700&display=swap");
-/* 
-* {
-	transition: background;
-} */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500;600;700&display=swap');
 
 html[data-theme="light"] {
 	--bg-color: #fefefe;
@@ -14,19 +10,32 @@ html[data-theme="light"] {
 	--li-completed-text-color: teal;
 	--li-action-color: rgba(0, 128, 128, 0.8);
 	--li-action-hover-text-color: white;
-	--input-button-bg-color: lightcoral;
-	--input-border-color: lightcoral;
+	/* --input-button-bg-color: lightcoral; */
+	/* --input-button-hover-color: #f06060; */
+
+	--input-button-bg-color: black;
+	--input-button-hover-color: #333;
+	--input-button-hover-border-color: #333;
+	--input-button-border: 3px solid black;
+	--input-border-color: black;
 	--input-border: none;
+	
+	
+	
+	/* --input-border-color: lightcoral; */
 	--input-text-indicator-color: black;
 	--input-placeholder-text-color: #ddd;
-	--input-button-hover-color: #f06060;
 	--input-text-color: black;
-	--input-button-border: 3px solid var(--input-button-bg-color);
-	--input-button-hover-border-color: var(--bg-color);
+
+
 	--stats-bg-color: black;
 	--stats-text-color: var(--bg-color);
-	--stats-container-border: 1px solid var(--bg-color);
-	--stats-border-radius: none;
+	/* --stats-container-border: 1px solid var(--bg-color); */
+	--stats-border-radius: 5px;
+	--stats-container-box-shadow: 1px 2px 3px #111; 
+	
+	
+	
 	--li-hover-text-color: rgb(46, 53, 53);
 	--li-completed-hover-text-color: var(--text-color);
 	--footer-link-color: blue;
@@ -87,6 +96,8 @@ body {
 	/* transition: background 0.3s; */
 	/* background-color: #d9afd9;
 	background-image: linear-gradient(90deg, #d9afd9 0%, #97d9e1 100%); */
+	display: grid;
+	grid-template-rows: auto 1fr auto;
 }
 
 a {

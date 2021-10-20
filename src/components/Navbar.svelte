@@ -10,9 +10,9 @@
 			<div class="logo">
 				<a href="/">Today Todos <span>v1.0.0</span></a>
 			</div>
-			<div class="dark-switch">
-				<DarkModeSwitch isDarkMode={isDarkMode}/>
-			</div>
+			<!-- <div class="dark-switch">
+				<DarkModeSwitch {isDarkMode} />
+			</div> -->
 		</div>
 		<ul class="nav-links">
 			<li><a href="#">Home</a></li>
@@ -58,14 +58,15 @@
 		list-style-type: none;
 		display: flex;
 		justify-content: space-between;
-		gap: 2rem;
+		gap: 4rem;
 		padding: 0;
 		margin: 0;
 	}
 
 	.nav-container ul a {
-		color: var(	--navbar-text-color);
+		color: var(--navbar-text-color);
 		font-size: 1.2rem;
+		font-weight: 600;
 	}
 
 	.brand span {
@@ -77,6 +78,11 @@
 		.nav-container {
 			flex-direction: column;
 			gap: 2rem;
+		}
+
+		.nav-container ul {
+			gap: 3rem;
+			margin: 0;
 		}
 
 		.nav-container .brand {
