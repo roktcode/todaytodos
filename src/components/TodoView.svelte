@@ -113,7 +113,7 @@
 						bind:this={todoInputRef}
 						bind:value={todoInput}
 						autocomplete="off"
-						placeholder="📝 what are you up to?"
+						placeholder="&#xf304"
 						maxlength="50"
 						required
 					/>
@@ -240,12 +240,15 @@
 
 	input::placeholder {
 		/* color: #ccc; */
-		opacity: 0.5;
+		opacity: 0.7;
+		color: black;
 		font-weight: lighter;
 		font-size: 1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		font-family: FontAwesome;
+		text-align: start;
 	}
 
 	.input {
