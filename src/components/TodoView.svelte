@@ -107,7 +107,7 @@
 				: 100
 		);
 
-	}
+		}
 </script>
 
 <div class="container">
@@ -146,7 +146,7 @@
 
 	<div class="todo-list">
 		<ul>
-			{#each todoList as { id, text, completed }, idx (id)}
+			{#each todoList as { id, text, completed } (id)}
 				<li
 					animate:flip
 					in:fade
