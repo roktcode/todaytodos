@@ -113,7 +113,7 @@
 						bind:this={todoInputRef}
 						bind:value={todoInput}
 						autocomplete="off"
-						placeholder="&#xf304"
+						placeholder="&#xf56b"
 						maxlength="50"
 						required
 					/>
@@ -243,12 +243,13 @@
 		opacity: 0.7;
 		color: black;
 		font-weight: lighter;
-		font-size: 1rem;
+		font-size: 0.8rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		font-family: FontAwesome;
-		text-align: start;
+		text-align: end;
+		transform: scaleX(-1);
 	}
 
 	.input {
