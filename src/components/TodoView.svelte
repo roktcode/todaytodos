@@ -1,23 +1,50 @@
 <script>
+	import todoListStore from "../stores/todoListStore.js";
 	import { flip } from "svelte/animate";
 	import { fade, fly } from "svelte/transition";
-	import { onMount } from "svelte";
+	import { onMount, onDestroy } from "svelte";
 	import { tweened } from "svelte/motion";
 	import { bounceIn } from "svelte/easing";
 
-	// load todos from localStorage before compnent renders
+	let todoList = [];
+
+	let completedTodos = 0;
+	let pendingTodos = 0;
+	let progress = tweened(0, {
+		duration: 300,
+		delay: 0,
+		easing: bounceIn,
+	});
+
+	const unsubscribe = todoListStore.subscribe((value) => {
+		todoList = value;
+		saveTodos();
+	});
+
 	onMount(() => {
-		loadTodos();
 		todoInputRef.focus();
 	});
+
+	onDestroy(() => {
+		unsubscribe();
+	});
+
+	completedTodos = todoList
+		.map((todo) => todo.completed)
+		.filter((c) => c).length;
+
+	pendingTodos = todoList.length - completedTodos;
+	progress.set(
+		todoList.length > 0
+			? Math.trunc((completedTodos / todoList.length) * 100) || 0
+			: 100
+	);
 
 	let todoInput = "";
 	let todoInputRef = null;
 
-	let todoList = [];
-
 	function addTodo() {
-		if (todoInput === "") return;
+		if (todoInput.trim() === "") return;
 
 		const nextId =
 			todoList.length > 0
@@ -28,9 +55,11 @@
 				  ) + 1
 				: 1;
 
-		todoList = [...todoList, { id: nextId, text: todoInput, completed: false }];
-		todoInput = "";
+		todoListStore.update((oldValues) => {
+			return [...oldValues, { id: nextId, text: todoInput, completed: false }];
+		});
 
+		todoInput = "";
 		saveTodos();
 	}
 
@@ -39,7 +68,9 @@
 
 		if (!todoToDelete) return;
 
-		todoList = todoList.filter((todo) => todo.id !== id);
+		todoListStore.update((oldValue) => {
+			return oldValue.filter((todo) => todo.id !== id);
+		});
 
 		saveTodos();
 	}
@@ -47,11 +78,15 @@
 	function toggleCompleted(id) {
 		const targetTodo = todoList.find((todo) => todo.id === id);
 
-		if (!targetTodo) return;
+		if (!targetTodo) {
+			return;
+		}
 
 		targetTodo.completed = !targetTodo.completed;
 
-		todoList = todoList.map((todo) => (todo.id !== id ? todo : targetTodo));
+		todoListStore.update((oldValue) => {
+			return oldValue.map((todo) => (todo.id !== id ? todo : targetTodo));
+		});
 
 		saveTodos();
 	}
@@ -59,22 +94,6 @@
 	function saveTodos() {
 		localStorage.setItem("todos", JSON.stringify(todoList));
 	}
-
-	function loadTodos() {
-		const todosJSON = localStorage.getItem("todos");
-
-		if (todosJSON) {
-			todoList = JSON.parse(todosJSON);
-		}
-	}
-
-	let completedTodos = 0;
-	let pendingTodos = 0;
-	let progress = tweened(0, {
-		duration: 300,
-		delay: 0,
-		easing: bounceIn,
-	});
 
 	$: {
 		completedTodos = todoList
@@ -87,6 +106,7 @@
 				? Math.trunc((completedTodos / todoList.length) * 100) || 0
 				: 100
 		);
+
 	}
 </script>
 
@@ -99,7 +119,6 @@
 				{completedTodos} ✅
 			</div>
 			<div class="pendinng">{pendingTodos} ⏳</div>
-			<!-- <div class="progress">{Math.trunc($progress)}% 🚀</div> -->
 		</div>
 	</div>
 
@@ -125,11 +144,6 @@
 		</div>
 	</div>
 
-	<!-- {#if todoList.length === 0}
-		<div class="empty-todos">
-			<p>No todos yet 📭</p>
-		</div>
-	{:else} -->
 	<div class="todo-list">
 		<ul>
 			{#each todoList as { id, text, completed }, idx (id)}
