@@ -4,7 +4,7 @@
 	import { fade, fly } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { tweened } from "svelte/motion";
-	import { bounceIn } from "svelte/easing";
+	import { expoOut } from "svelte/easing";
 
 	let todoList = [];
 
@@ -13,7 +13,7 @@
 	let progress = tweened(0, {
 		duration: 300,
 		delay: 0,
-		easing: bounceIn,
+		easing: expoOut,
 	});
 
 	const unsubscribe = todoListStore.subscribe((value) => {
@@ -331,15 +331,14 @@
 	.content-container:hover {
 		background: var(--li-hover-color);
 		box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
-		display: flex;
 		color: var(--li-hover-text-color);
+		/* padding-left: 4px; */
 	}
 
 	.content-prefix {
 		width: 20px;
 		height: 20px;
 		color: var(--li-completed-text-color);
-		/* flex-grow: 1; */
 	}
 
 	.content {
