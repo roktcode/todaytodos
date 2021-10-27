@@ -18,9 +18,9 @@
 		</div>
 
 		{#if $authStore.user}
-			<ul class="nav-links">
-				<li><button on:click={logout}>Logout</button></li>
-			</ul>
+			<div class="logout">
+				<a href="" on:click|preventDefault={logout}>Logout</a>
+			</div>
 		{/if}
 	</div>
 </nav>
@@ -57,41 +57,20 @@
 		color: var(---text-color);
 	}
 
-	.nav-container ul {
-		list-style-type: none;
-		display: flex;
-		justify-content: space-between;
-		gap: 4rem;
-		padding: 0;
-		margin: 0;
-	}
-
-	.nav-container a {
+	.nav-container .logo a {
 		color: var(--navbar-text-color);
 		font-size: 1.2rem;
 		font-weight: 600;
 	}
 
-	/* .brand span {
-		font-size: 0.75rem;
-		font-weight: lighter;
-	} */
 
-	button {
-		cursor: pointer;
-	}
 
 	@media (max-width: 500px) {
 		.nav-container {
 			flex-direction: column;
 			gap: 1rem;
 		}
-
-		.nav-container ul {
-			gap: 3rem;
-			margin: 0;
-		}
-
+		
 		.nav-container .brand {
 			flex-direction: column;
 			gap: 2rem;
