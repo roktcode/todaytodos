@@ -2,8 +2,8 @@
 	import { authStore } from "../stores/authStore.js";
 
 	function logout() {
-		localStorage.removeItem("user");
 		$authStore = { currentPage: "login", user: null };
+		localStorage.removeItem("user");
 	}
 </script>
 
@@ -13,18 +13,15 @@
 			<div class="logo">
 				<a href="/">
 					{$authStore.user ? $authStore.user.name + "'s" : "Today"} Todos
-					<span>v1.0.0</span></a
-				>
+				</a>
 			</div>
 		</div>
 
-		<nav />
-
-		<ul class="nav-links">
-			{#if $authStore.user}
+		{#if $authStore.user}
+			<ul class="nav-links">
 				<li><button on:click={logout}>Logout</button></li>
-			{/if}
-		</ul>
+			</ul>
+		{/if}
 	</div>
 </nav>
 
@@ -36,7 +33,7 @@
 		/* background: #eee; */
 		background: var(--navbar-bg-color);
 		margin-bottom: 2rem;
-		box-shadow: 2px 3px 4px var(--navbar-box-shadow-color);
+		/* box-shadow: 1px 2px 3px var(--navbar-box-shadow-color); */
 	}
 
 	.nav-container {
@@ -75,10 +72,10 @@
 		font-weight: 600;
 	}
 
-	.brand span {
+	/* .brand span {
 		font-size: 0.75rem;
 		font-weight: lighter;
-	}
+	} */
 
 	button {
 		cursor: pointer;
@@ -87,6 +84,7 @@
 	@media (max-width: 500px) {
 		.nav-container {
 			flex-direction: column;
+			gap: 1rem;
 		}
 
 		.nav-container ul {

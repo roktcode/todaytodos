@@ -6,24 +6,27 @@
 	let errorText = "";
 
 	async function login() {
-		const response = await fetch(" http://localhost:3000/api/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ email, password }),
-		});
+		try {
+			const response = await fetch(" http://localhost:3000/api/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email, password }),
+			});
 
-		if (!response.ok) {
-			console.log("Login failed with code", response.status);
-			errorText = `Login failed with status code ${response.status}`;
-			return;
-		}
+			if (!response.ok) {
+				console.log("Login failed with code", response.status);
+				// errorText = `Login failed with status code ${response.status}`;
+				errorText = `Login failed. Try again with valid email, password`;
+				return;
+			}
 
-		console.log("signup successful");
-		const json = await response.json();
-		$authStore = { user: json, currentPage: "dashboard" };
-		localStorage.setItem("user", JSON.stringify(json));
+			console.log("signup successful");
+			const json = await response.json();
+			$authStore = { user: json, currentPage: "dashboard" };
+			localStorage.setItem("user", JSON.stringify(json));
+		} catch (error) {}
 	}
 </script>
 
@@ -62,11 +65,17 @@
 	<div class="signup-text">
 		<!-- Don't have an account? <a href="/signup" use:link> Sign Up</a> -->
 		Don't have account?
-		<a href="#" on:click={() => ($authStore.currentPage = "signup")}>Sign Up</a>
+		<a
+			href=""
+			on:click|preventDefault={() => ($authStore.currentPage = "signup")}
+			>Sign Up</a
+		>
 
 		<!-- <button on:click={() => ($authStore.currentPage = "signup")}>Sign Up</button -->
 	</div>
-	<div class="error">{errorText}</div>
+	{#if errorText}
+		<div class="error">{errorText}</div>
+	{/if}
 </div>
 
 <style>

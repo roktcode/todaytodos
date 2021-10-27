@@ -7,32 +7,31 @@
 	let errorText = "";
 
 	async function signup() {
-		const response = await fetch("http://localhost:3000/api/signup", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ name, email, password }),
-		});
+		try {
+			const response = await fetch("http://localhost:3000/api/signup", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ name, email, password }),
+			});
 
-		if (!response.ok) {
-			console.log(
-				response.status,
-				"Sign up failed with code",
-				response.statusText
-			);
-			errorText = `Sign up failed with status code ${response.statusText}`;
-			return;
-		}
+			if (!response.ok) {
+				console.log(
+					response.status,
+					"Sign up failed with code",
+					response.statusText
+				);
+				// errorText = `Sign up failed with status code ${response.statusText}`;
+				errorText = `Sign up failed. Make sure to enter a name with at least 2 characters, valid email, and password with at least 2 characters`;
+				return;
+			}
 
-		console.log("signup successful");
-		const json = await response.json();
-		$authStore = { user: json, currentPage: "dashboard" };
-		localStorage.setItem("user", JSON.stringify(json));
-		// $currentPageStore = "dashboard";
-		// $authStore = json
-		// $currentPageStore = "dashboard";
-		// localStorage.setItem("user", JSON.stringify(json));
+			console.log("signup successful");
+			const json = await response.json();
+			$authStore = { user: json, currentPage: "dashboard" };
+			localStorage.setItem("user", JSON.stringify(json));
+		} catch (error) {}
 	}
 </script>
 
@@ -80,9 +79,16 @@
 
 	<div class="signup-text">
 		Already have an account?
-		<a href="#" on:click={() => ($authStore.currentPage = "login")}>Login</a>
+		<a
+			href=""
+			on:click|preventDefault={() => ($authStore.currentPage = "login")}
+			>Login</a
+		>
 	</div>
-	<div class="error">{errorText}</div>
+
+	{#if errorText}
+		<div class="error">{errorText}</div>
+	{/if}
 </div>
 
 <style>
