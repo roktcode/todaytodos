@@ -1,12 +1,20 @@
 <script>
+	import { authStore } from "../stores/authStore.js";
 	import todoListStore from "../stores/todoListStore.js";
 	import { flip } from "svelte/animate";
 	import { fade, fly } from "svelte/transition";
-	import { onMount, onDestroy } from "svelte";
+	import { onMount } from "svelte";
 	import { tweened } from "svelte/motion";
 	import { expoOut } from "svelte/easing";
+	import {
+		loadTodos,
+		addTodo,
+		deleteTodo,
+		toggleCompletedTodo,
+	} from "../utils/todosApi.js";
 
-	let todoList = [];
+	let todoInput = "";
+	let todoInputRef = null;
 
 	let completedTodos = 0;
 	let pendingTodos = 0;
@@ -16,105 +24,67 @@
 		easing: expoOut,
 	});
 
-	const unsubscribe = todoListStore.subscribe((value) => {
-		todoList = value;
-		saveTodos();
-	});
-
 	onMount(() => {
 		todoInputRef.focus();
 	});
 
-	onDestroy(() => {
-		unsubscribe();
-	});
+	async function getTodos() {
+		const todos = await loadTodos($authStore.user.token);
+		$todoListStore = todos;
+	}
 
-	completedTodos = todoList
-		.map((todo) => todo.completed)
-		.filter((c) => c).length;
-
-	pendingTodos = todoList.length - completedTodos;
-	progress.set(
-		todoList.length > 0
-			? Math.trunc((completedTodos / todoList.length) * 100) || 0
-			: 100
-	);
-
-	let todoInput = "";
-	let todoInputRef = null;
-
-	function addTodo() {
+	async function addNewTodo() {
 		if (todoInput.trim() === "") return;
 
-		const nextId =
-			todoList.length > 0
-				? Math.max(
-						...todoList.map((todo) => {
-							return todo.id;
-						})
-				  ) + 1
-				: 1;
+		const addedTodo = await addTodo($authStore.user.token, todoInput);
 
-		todoListStore.update((oldValues) => {
-			return [...oldValues, { id: nextId, text: todoInput, completed: false }];
-		});
+		if (!addedTodo) return;
 
+		$todoListStore = [...$todoListStore, addedTodo];
 		todoInput = "";
-		saveTodos();
 	}
 
-	function removeTodo(id) {
-		const todoToDelete = todoList.find((todo) => todo.id === id);
+	async function removeTodo(id) {
+		const isDeleted = await deleteTodo($authStore.user.token, id);
 
-		if (!todoToDelete) return;
+		if (!isDeleted) return;
 
-		todoListStore.update((oldValue) => {
-			return oldValue.filter((todo) => todo.id !== id);
-		});
-
-		saveTodos();
+		$todoListStore = $todoListStore.filter((todo) => todo._id !== id);
 	}
 
-	function toggleCompleted(id) {
-		const targetTodo = todoList.find((todo) => todo.id === id);
+	async function toggleCompleted(id, text, completed) {
+		const updatedTodo = await toggleCompletedTodo(
+			$authStore.user.token,
+			id,
+			text,
+			completed
+		);
 
-		if (!targetTodo) {
-			return;
-		}
+		if (!updatedTodo) return;
 
-		targetTodo.completed = !targetTodo.completed;
-
-		todoListStore.update((oldValue) => {
-			return oldValue.map((todo) => (todo.id !== id ? todo : targetTodo));
-		});
-
-		saveTodos();
-	}
-
-	function saveTodos() {
-		localStorage.setItem("todos", JSON.stringify(todoList));
+		$todoListStore = $todoListStore.map((todo) =>
+			todo._id !== id ? todo : updatedTodo
+		);
 	}
 
 	$: {
-		completedTodos = todoList
+		completedTodos = $todoListStore
 			.map((todo) => todo.completed)
 			.filter((c) => c).length;
-
-		pendingTodos = todoList.length - completedTodos;
+		pendingTodos = $todoListStore.length - completedTodos;
 		progress.set(
-			todoList.length > 0
-				? Math.trunc((completedTodos / todoList.length) * 100) || 0
+			$todoListStore.length > 0
+				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
 				: 100
 		);
-
-		}
+	}
 </script>
 
 <div class="container">
 	<div class="stats-container">
 		<div class="stats-title">🚀 PROGRESS {Math.trunc($progress)}%</div>
 		<div class="stats">
-			<div class="total">{todoList.length} TOTAL</div>
+			<div class="total">{$todoListStore.length} TOTAL</div>
 			<div class="completed">
 				{completedTodos} ✅
 			</div>
@@ -125,7 +95,7 @@
 	<div class="add-todos">
 		<div class="todo-input">
 			<div class="form">
-				<form on:submit|preventDefault={addTodo} class="input">
+				<form on:submit|preventDefault={addNewTodo} class="input">
 					<input
 						type="text"
 						id="addTodo"
@@ -139,36 +109,37 @@
 				</form>
 			</div>
 			<div class="submit">
-				<button type="submit" on:click={addTodo}>ADD</button>
+				<button type="submit" on:click={addNewTodo}>ADD</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="todo-list">
-		<ul>
-			{#each todoList as { id, text, completed } (id)}
-				<li
-					animate:flip
-					in:fade
-					out:fly={{ x: 100 }}
-					on:click={() => toggleCompleted(id)}
-				>
-					<div class="content-container">
-						{#if completed}
-							<div class="content-prefix">✔</div>
-						{/if}
-						<div class="content" class:completed>
-							<p>{text}</p>
+		{#await getTodos()}
+			<div class="loading-todos">Loading todos...</div>
+		{:then _}
+			<ul>
+				{#each $todoListStore as { _id, text, completed } (_id)}
+					<li animate:flip in:fade out:fly={{ x: 100 }}>
+						<div
+							class="content-container"
+							on:click={() => toggleCompleted(_id, text, completed)}
+						>
+							{#if completed}
+								<div class="content-prefix">✔</div>
+							{/if}
+							<div class="content" class:completed>
+								<p>{text}</p>
+							</div>
 						</div>
-					</div>
-					<div class="actions">
-						<button on:click={() => removeTodo(id)}>Remove</button>
-					</div>
-				</li>
-			{/each}
-		</ul>
+						<div class="actions">
+							<button on:click={() => removeTodo(_id)}>Remove</button>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		{/await}
 	</div>
-	<!-- {/if} -->
 </div>
 
 <style>

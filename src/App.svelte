@@ -1,13 +1,9 @@
 <script>
+	import HomePage from "./components/HomePage.svelte";
 	import Navbar from "./components/Navbar.svelte";
-	import TodoView from "./components/TodoView.svelte";
 	import Footer from "./components/Footer.svelte";
 </script>
 
 <Navbar />
-<TodoView />
+<HomePage />
 <Footer />
-
-<style>
-	
-</style>

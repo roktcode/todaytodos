@@ -1,23 +1,29 @@
 <script>
-	import DarkModeSwitch from "./DarkModeSwitch.svelte";
+	import { authStore } from "../stores/authStore.js";
 
-	export let isDarkMode;
+	function logout() {
+		localStorage.removeItem("user");
+		$authStore = { currentPage: "login", user: null };
+	}
 </script>
 
 <nav>
 	<div class="nav-container">
 		<div class="brand">
 			<div class="logo">
-				<a href="/">Today Todos <span>v1.0.0</span></a>
+				<a href="/">
+					{$authStore.user ? $authStore.user.name + "'s" : "Today"} Todos
+					<span>v1.0.0</span></a
+				>
 			</div>
-			<!-- <div class="dark-switch">
-				<DarkModeSwitch {isDarkMode} />
-			</div> -->
 		</div>
+
+		<nav />
+
 		<ul class="nav-links">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">About</a></li>
-			<li><a href="#">Contact</a></li>
+			{#if $authStore.user}
+				<li><button on:click={logout}>Logout</button></li>
+			{/if}
 		</ul>
 	</div>
 </nav>
@@ -63,7 +69,7 @@
 		margin: 0;
 	}
 
-	.nav-container ul a {
+	.nav-container a {
 		color: var(--navbar-text-color);
 		font-size: 1.2rem;
 		font-weight: 600;
@@ -74,10 +80,13 @@
 		font-weight: lighter;
 	}
 
-	@media (max-width: 700px) {
+	button {
+		cursor: pointer;
+	}
+
+	@media (max-width: 500px) {
 		.nav-container {
 			flex-direction: column;
-			gap: 2rem;
 		}
 
 		.nav-container ul {
