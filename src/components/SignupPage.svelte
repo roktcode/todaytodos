@@ -8,13 +8,16 @@
 
 	async function signup() {
 		try {
-			const response = await fetch("https://today-todos-api.herokuapp.com/api/signup", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ name, email, password }),
-			});
+			const response = await fetch(
+				"https://today-todos-api.herokuapp.com/api/signup",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ name, email, password }),
+				}
+			);
 
 			if (!response.ok) {
 				console.log(
@@ -22,8 +25,11 @@
 					"Sign up failed with code",
 					response.statusText
 				);
-				// errorText = `Sign up failed with status code ${response.statusText}`;
 				errorText = `Sign up failed. Make sure to enter a name with at least 2 characters, valid email, and password with at least 2 characters`;
+
+				if (response.status === 400) {
+					errorText = `Email already exists. try loggin in instead!`;
+				}
 				return;
 			}
 

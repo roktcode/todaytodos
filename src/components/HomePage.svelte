@@ -3,8 +3,8 @@
 	import LoginPage from "./LoginPage.svelte";
 	import SignupPage from "./SignupPage.svelte";
 	import DashboardPage from "./DashboardPage.svelte";
+	import WelcomePage from "./WelcomePage.svelte";
 </script>
-
 
 {#if $authStore.currentPage === "login"}
 	<LoginPage />
@@ -13,5 +13,5 @@
 {:else if $authStore.currentPage === "dashboard"}
 	<DashboardPage />
 {:else}
-	<LoginPage />
+	<WelcomePage />
 {/if}

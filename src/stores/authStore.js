@@ -7,7 +7,7 @@ function loadUserData() {
 
 	if (!userString) {
 		return {
-			currentPage: "login",
+			currentPage: "welcome",
 			user: null,
 		};
 	}

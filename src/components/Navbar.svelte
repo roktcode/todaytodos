@@ -2,7 +2,7 @@
 	import { authStore } from "../stores/authStore.js";
 
 	function logout() {
-		$authStore = { currentPage: "login", user: null };
+		$authStore = { currentPage: "welcome", user: null };
 		localStorage.removeItem("user");
 	}
 </script>

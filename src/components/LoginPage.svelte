@@ -8,13 +8,16 @@
 	async function login() {
 		try {
 			// const response = await fetch("http://localhost:3000/api/login", {
-			const response = await fetch("https://today-todos-api.herokuapp.com/api/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ email, password }),
-			});
+			const response = await fetch(
+				"https://today-todos-api.herokuapp.com/api/login",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email, password }),
+				}
+			);
 
 			if (!response.ok) {
 				console.log("Login failed with code", response.status);
@@ -64,15 +67,12 @@
 	</form>
 
 	<div class="signup-text">
-		<!-- Don't have an account? <a href="/signup" use:link> Sign Up</a> -->
 		Don't have account?
 		<a
 			href=""
 			on:click|preventDefault={() => ($authStore.currentPage = "signup")}
 			>Sign Up</a
 		>
-
-		<!-- <button on:click={() => ($authStore.currentPage = "signup")}>Sign Up</button -->
 	</div>
 	{#if errorText}
 		<div class="error">{errorText}</div>
@@ -120,6 +120,7 @@
 
 	.signup-text {
 		margin: 1rem 0;
+		text-align: center;
 	}
 
 	.signup-text a {
