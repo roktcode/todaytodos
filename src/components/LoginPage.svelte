@@ -96,6 +96,20 @@
 		/* margin-top: 4rem; */
 	}
 
+	.content::after {
+		content: "";
+		background: url(https://images.pexels.com/photos/372098/pexels-photo-372098.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+		background-size: cover;
+		background-repeat: no-repeat;
+		opacity: 0.5;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		position: absolute;
+		z-index: -1;
+	}
+
 	form {
 		display: flex;
 		flex-direction: column;
