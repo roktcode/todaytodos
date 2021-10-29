@@ -75,7 +75,7 @@
 		/* gap: 1rem; */
 	}
 
-	.actions div {
+	.actions > div {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -91,6 +91,7 @@
 		outline: none;
 		border: none;
 		font-weight: 600;
+		letter-spacing: 2px;
 	}
 
 	.login button {
