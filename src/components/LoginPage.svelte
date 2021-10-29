@@ -6,6 +6,13 @@
 	let errorText = "";
 
 	async function login() {
+
+		if(!email || !password) {
+			errorText = 'Enter your email and password'
+			return
+		}
+
+
 		try {
 			// const response = await fetch("http://localhost:3000/api/login", {
 			const response = await fetch(

@@ -7,6 +7,21 @@
 	let errorText = "";
 
 	async function signup() {
+		if (!name || !email || !password) {
+			errorText = "Enter your name, an email, and a password";
+			return;
+		}
+
+		if (name.length < 2) {
+			errorText = "Name should be at least 2 characters";
+			return;
+		}
+
+		if (email.length < 2) {
+			errorText = "Password should be at least 2 characters";
+			return;
+		}
+
 		try {
 			const response = await fetch(
 				"https://today-todos-api.herokuapp.com/api/signup",
@@ -111,7 +126,6 @@
 		max-width: 350px;
 		width: 100%;
 		margin: 0 auto;
-		/* margin-top: 4rem; */
 	}
 
 	.content::after {
