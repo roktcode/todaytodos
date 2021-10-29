@@ -10,8 +10,6 @@ html[data-theme="light"] {
 	--li-completed-text-color: teal;
 	--li-action-color: rgba(0, 128, 128, 0.8);
 	--li-action-hover-text-color: white;
-	/* --input-button-bg-color: lightcoral; */
-	/* --input-button-hover-color: #f06060; */
 
 	--input-button-bg-color: black;
 	--input-button-hover-color: #333;
@@ -22,7 +20,6 @@ html[data-theme="light"] {
 	
 	
 	
-	/* --input-border-color: lightcoral; */
 	--input-text-indicator-color: black;
 	--input-placeholder-text-color: #ddd;
 	--input-text-color: black;
@@ -93,27 +90,9 @@ body {
 	min-height: 100vh;
 	background: var(--bg-color);
 	color: var(--text-color);
-	/* transition: background 0.3s; */
-	/* background-color: #d9afd9;
-	background-image: linear-gradient(90deg, #d9afd9 0%, #97d9e1 100%); */
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 }
-
-
-/* body::after {
-  content: "";
-  background: url(https://images.pexels.com/photos/372098/pexels-photo-372098.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-	background-size: cover;
-	background-repeat: no-repeat;
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;   
-} */
 
 a {
 	color: rgb(0, 100, 200);
