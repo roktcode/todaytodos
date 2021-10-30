@@ -43,7 +43,7 @@
 				errorText = `Sign up failed. Make sure to enter a name with at least 2 characters, valid email, and password with at least 2 characters`;
 
 				if (response.status === 400) {
-					errorText = `Email already exists. try loggin in instead!`;
+					errorText = `Email already exists. Try logging in instead!`;
 				}
 				return;
 			}

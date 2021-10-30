@@ -5,7 +5,7 @@
 
 	<div class="author">
 		<p>
-			Developed by <a target="_blank" href="https://roktlandr.vercel.app"
+			Developed by <a target="_blank" href="https://roktmy.vercel.app"
 				>Muhammad Yasser</a
 			> at the 2021
 		</p>
