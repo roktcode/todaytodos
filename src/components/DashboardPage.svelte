@@ -103,7 +103,7 @@
 						bind:value={todoInput}
 						autocomplete="off"
 						placeholder="&#xf56b"
-						maxlength="50"
+						maxlength="70"
 						required
 					/>
 				</form>
@@ -125,9 +125,16 @@
 							class="content-container"
 							on:click={() => toggleCompleted(_id, text, completed)}
 						>
-							{#if completed}
-								<div class="content-prefix">✔</div>
-							{/if}
+							<div class="content-prefix">
+								{#if completed}
+								<!-- <i class="fa-solid fa-check"></i> -->
+								✅
+								<!-- <i class=""></i> -->
+								{:else}
+								<!-- <i class="fa-solid fa-hourglass"></i> -->
+								⏳
+								{/if}
+							</div>
 							<div class="content" class:completed>
 								<p>{text}</p>
 							</div>
@@ -148,7 +155,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		max-width: 350px;
+		min-width: 350px;
 		width: 100%;
 		margin: 0 auto;
 	}
@@ -212,7 +219,8 @@
 	input {
 		width: 100%;
 		outline: none;
-		text-align: center;
+		/* text-align: center; */
+		text-align: start;
 		font-weight: bold;
 		font-size: 1.2rem;
 		border: none;
@@ -261,10 +269,10 @@
 		margin: 0.5rem 0;
 	}
 
-	.todo-input button:hover {
+	/* .todo-input button:hover {
 		background: var(--input-button-hover-color);
 		border-color: var(--input-button-hover-border-color);
-	}
+	} */
 
 	.todo-list {
 		width: 100%;
@@ -286,30 +294,36 @@
 		gap: 0.5rem;
 		border-radius: 5px;
 		transition: all 0.2s;
+		margin-bottom: 1rem;
 	}
 
 	.content-container {
 		display: flex;
 		justify-content: stretch;
-		align-items: baseline;
-		font-size: 1.3rem;
+		align-items: center;
+		font-size: 1rem;
 		transition: all 0.2s;
 		flex-grow: 1;
 		min-width: 0;
-		gap: 0.5rem;
+		gap: 0.8rem;
 	}
 
-	.content-container:hover {
+	/* .content-container:hover {
 		background: var(--li-hover-color);
 		box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
 		color: var(--li-hover-text-color);
-		/* padding-left: 4px; */
-	}
+		
+	} */
 
 	.content-prefix {
-		width: 20px;
-		height: 20px;
+		min-width: 20px;
+		min-height: 20px;
 		color: var(--li-completed-text-color);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-family: FontAwesome;
+		font-style: normal;
 	}
 
 	.content {
@@ -322,9 +336,9 @@
 		overflow-wrap: break-word;
 	}
 
-	.content:hover {
+	/* .content:hover {
 		text-decoration: line-through;
-	}
+	} */
 
 	li button {
 		margin: 0;
@@ -337,13 +351,13 @@
 		font-size: 0.8rem;
 	}
 
-	li button:hover {
+	/* li button:hover {
 		opacity: 0.9;
 		cursor: pointer;
 		background: var(--li-action-color);
 		color: var(--li-action-hover-text-color);
 		border-color: var(--bg-color);
-	}
+	} */
 
 	.content.completed {
 		text-decoration: line-through;
@@ -352,10 +366,10 @@
 		color: var(--li-completed-text-color);
 	}
 
-	.content.completed:hover {
+	/* .content.completed:hover {
 		text-decoration: none;
 		color: var(--li-completed-hover-text-color);
-	}
+	} */
 
 	@media (min-width: 400px) and (max-width: 600px) {
 		.container {
@@ -419,6 +433,7 @@
 	@media (min-width: 601px) {
 		.content-container {
 			gap: 1rem;
+			font-size: 1.1rem;
 		}
 
 		li {
@@ -427,6 +442,36 @@
 
 		.stats-container {
 			padding: 1rem;
+		}
+	}
+
+	@media (hover: hover) {
+		.todo-input button:hover {
+			background: var(--input-button-hover-color);
+			border-color: var(--input-button-hover-border-color);
+		}
+
+		.content-container:hover {
+			background: var(--li-hover-color);
+			box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
+			color: var(--li-hover-text-color);
+		}
+
+		.content:hover {
+			text-decoration: line-through;
+		}
+
+		.content.completed:hover {
+			text-decoration: none;
+			color: var(--li-completed-hover-text-color);
+		}
+
+		li button:hover {
+			opacity: 0.9;
+			cursor: pointer;
+			background: var(--li-action-color);
+			color: var(--li-action-hover-text-color);
+			border-color: var(--bg-color);
 		}
 	}
 </style>
