@@ -152,6 +152,7 @@
 	button {
 		cursor: pointer;
 		padding: 0.4rem;
+		font-size: 1rem;
 	}
 
 	.submit-group {

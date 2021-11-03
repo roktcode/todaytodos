@@ -6,12 +6,10 @@
 	let errorText = "";
 
 	async function login() {
-
-		if(!email || !password) {
-			errorText = 'Enter your email and password'
-			return
+		if (!email || !password) {
+			errorText = "Enter your email and password";
+			return;
 		}
-
 
 		try {
 			// const response = await fetch("http://localhost:3000/api/login", {
@@ -45,7 +43,7 @@
 	<div class="title">
 		<h3>LOGIN</h3>
 	</div>
-	<form class="form" on:submit|preventDefault={login}  autocomplete="off">
+	<form class="form" on:submit|preventDefault={login} autocomplete="off">
 		<div class="email-group">
 			<label for="email">Email:</label>
 			<input
@@ -129,6 +127,7 @@
 	button {
 		cursor: pointer;
 		padding: 0.4rem;
+		font-size: 1rem;
 	}
 
 	.submit-group {

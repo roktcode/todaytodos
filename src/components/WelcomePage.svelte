@@ -93,6 +93,7 @@
 		border: none;
 		font-weight: 600;
 		letter-spacing: 2px;
+		font-family: inherit;
 	}
 
 	.login button {
