@@ -81,7 +81,7 @@
 </script>
 
 <div class="container">
-	<div class="stats-container">
+	<!-- <div class="stats-container">
 		<div class="stats-title">🚀 PROGRESS {Math.trunc($progress)}%</div>
 		<div class="stats">
 			<div class="total">{$todoListStore.length} TOTAL</div>
@@ -90,26 +90,30 @@
 			</div>
 			<div class="pendinng">{pendingTodos} ⏳</div>
 		</div>
-	</div>
+	</div> -->
 
 	<div class="add-todos">
 		<div class="todo-input">
-			<div class="form">
-				<form on:submit|preventDefault={addNewTodo} class="input">
-					<input
-						type="text"
-						id="addTodo"
-						bind:this={todoInputRef}
-						bind:value={todoInput}
-						autocomplete="off"
-						placeholder="&#xf56b"
-						maxlength="70"
-						required
+			<form on:submit|preventDefault={addNewTodo}>
+				<input
+					type="text"
+					id="addTodo"
+					bind:this={todoInputRef}
+					bind:value={todoInput}
+					autocomplete="off"
+					maxlength="70"
+					placeholder="&#xf56b"
+					required
 					/>
-				</form>
-			</div>
-			<div class="submit">
-				<button type="submit" on:click={addNewTodo}>ADD</button>
+			</form>
+			<div class="submit" on:click={addNewTodo}>
+				<!-- <input value="&#x2b" class="button" type="submit" on:click={addNewTodo}/> -->
+				<!-- <div class="button-div"> -->
+					<!-- <i class="fa-solid fa-circle-plus"></i> -->
+					<!-- ➕	 -->
+					<!-- <i class="fa-solid fa-square-plus"></i> -->
+				<!-- </div> -->
+				+
 			</div>
 		</div>
 	</div>
@@ -127,12 +131,12 @@
 						>
 							<div class="content-prefix">
 								{#if completed}
-								<!-- <i class="fa-solid fa-check"></i> -->
-								✅
-								<!-- <i class=""></i> -->
+									<!-- <i class="fa-solid fa-check"></i> -->
+									✅
+									<!-- <i class=""></i> -->
 								{:else}
-								<!-- <i class="fa-solid fa-hourglass"></i> -->
-								⏳
+									<!-- <i class="fa-solid fa-hourglass"></i> -->
+									⏳
 								{/if}
 							</div>
 							<div class="content" class:completed>
@@ -190,49 +194,49 @@
 		flex-direction: row;
 		gap: 2rem;
 		justify-content: center;
-		/* align-items: center; */
-		/* font-weight: bold; */
 	}
 
 	.add-todos {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
 		margin: 1rem 0;
 		width: 100%;
 	}
-
 	.todo-input {
 		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		justify-content: center;
+		flex-direction: row;
+		align-items: center;
+		padding-bottom: 8px;
+		gap: 10px;
 	}
 
-	.submit {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
+	form {
+		flex-grow: 1;
+		border-bottom: 1px solid var(--input-border-color);
+
 	}
 
 	input {
 		width: 100%;
 		outline: none;
-		/* text-align: center; */
 		text-align: start;
 		font-weight: bold;
 		font-size: 1.2rem;
 		border: none;
-		border: var(--input-border);
-		border-bottom: 1px solid var(--input-border-color);
 		background: var(--input-bg-color);
 		caret-color: var(--input-text-indicator-color);
 		color: var(--input-text-color);
+		font-family: "Noto Sans Mono", monospace;
+
+		padding-left: 4px;
+		padding-bottom: 4px;
+	
 	}
 
+	input:-webkit-search-cancel-button{
+    position:relative;
+    right:20px;    
+}
+
 	input::placeholder {
-		/* color: #ccc; */
 		opacity: 0.7;
 		color: black;
 		font-weight: lighter;
@@ -240,39 +244,27 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-family: FontAwesome;
 		text-align: end;
 		transform: scaleX(-1);
+		font-family: FontAwesome;
 	}
 
-	.input {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: flex-end;
-	}
-
-	.todo-input button {
-		border: var(--input-button-border);
-		border-radius: 5px;
-		color: white;
-		background: var(--input-button-bg-color);
-		cursor: pointer;
-		transition: all 0.15s;
-		font-size: 1rem;
-		width: 80px;
-		height: 35px;
-		font-weight: bold;
+	.submit {
+		min-width: 30px;
+		height: 30px;
+		border-radius: 10%;
+		background-color: transparent;
+		border: 1px solid black;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0.5rem 0;
+		color: black;
+		font-size: 2rem;
+		font-weight: 600;
+		padding: 0;
+		cursor: pointer;
+		transition: all 0.15s;
 	}
-
-	/* .todo-input button:hover {
-		background: var(--input-button-hover-color);
-		border-color: var(--input-button-hover-border-color);
-	} */
 
 	.todo-list {
 		width: 100%;
@@ -308,13 +300,6 @@
 		gap: 0.8rem;
 	}
 
-	/* .content-container:hover {
-		background: var(--li-hover-color);
-		box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
-		color: var(--li-hover-text-color);
-		
-	} */
-
 	.content-prefix {
 		min-width: 20px;
 		min-height: 20px;
@@ -322,13 +307,11 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		font-family: FontAwesome;
 		font-style: normal;
 	}
 
 	.content {
 		flex-grow: 1;
-		/* padding: 0.5rem 1rem; */
 		min-width: 0;
 	}
 
@@ -336,9 +319,6 @@
 		overflow-wrap: break-word;
 	}
 
-	/* .content:hover {
-		text-decoration: line-through;
-	} */
 
 	li button {
 		margin: 0;
@@ -349,27 +329,17 @@
 		outline: none;
 		transition: all 0.2s;
 		font-size: 0.8rem;
+		padding: 0.3rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
-
-	/* li button:hover {
-		opacity: 0.9;
-		cursor: pointer;
-		background: var(--li-action-color);
-		color: var(--li-action-hover-text-color);
-		border-color: var(--bg-color);
-	} */
-
 	.content.completed {
 		text-decoration: line-through;
 		/* text-decoration-style: double; */
 		font-weight: normal;
 		color: var(--li-completed-text-color);
 	}
-
-	/* .content.completed:hover {
-		text-decoration: none;
-		color: var(--li-completed-hover-text-color);
-	} */
 
 	@media (min-width: 400px) and (max-width: 600px) {
 		.container {
@@ -393,16 +363,13 @@
 		li button {
 			font-size: 1rem;
 		}
+
+		
 	}
 
 	@media (min-width: 701px) {
 		.container {
 			max-width: 600px;
-		}
-
-		.add-todos button {
-			width: 100px;
-			height: 42px;
 		}
 
 		li button {
@@ -421,13 +388,12 @@
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			gap: 1rem;
 			/* justify-content: ; */
 		}
 
-		.form {
+		/* .form {
 			flex-grow: 1;
-		}
+		} */
 	}
 
 	@media (min-width: 601px) {
@@ -443,13 +409,18 @@
 		.stats-container {
 			padding: 1rem;
 		}
+
+		.submit {
+			width: 40px;
+			height: 40px;
+		}
 	}
 
 	@media (hover: hover) {
-		.todo-input button:hover {
+		/* .todo-input button:hover {
 			background: var(--input-button-hover-color);
 			border-color: var(--input-button-hover-border-color);
-		}
+		} */
 
 		.content-container:hover {
 			background: var(--li-hover-color);
@@ -472,6 +443,12 @@
 			background: var(--li-action-color);
 			color: var(--li-action-hover-text-color);
 			border-color: var(--bg-color);
+		}
+
+		.submit:hover {
+			background-color: black;
+			color: white;
+			border: 1px solid transparent;
 		}
 	}
 </style>

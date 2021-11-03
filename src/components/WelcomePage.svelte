@@ -83,6 +83,7 @@
 	}
 
 	.actions button {
+		padding: 0.8rem;
 		background: #000;
 		color: white;
 		width: 150px;

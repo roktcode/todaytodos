@@ -45,7 +45,7 @@
 	<div class="title">
 		<h3>LOGIN</h3>
 	</div>
-	<form class="form" on:submit|preventDefault={login}>
+	<form class="form" on:submit|preventDefault={login}  autocomplete="off">
 		<div class="email-group">
 			<label for="email">Email:</label>
 			<input
@@ -122,12 +122,13 @@
 		flex-direction: column;
 		align-items: stretch;
 		width: 100%;
-		gap: 10px;
+		gap: 1rem;
 		margin-bottom: 1rem;
 	}
 
 	button {
 		cursor: pointer;
+		padding: 0.4rem;
 	}
 
 	.submit-group {
@@ -137,6 +138,9 @@
 
 	input {
 		width: 100%;
+		padding: 0.3rem 0.4rem;
+		font-size: 1.2rem;
+		font-family: "Noto Sans Mono", monospace;
 	}
 
 	.signup-text {
@@ -151,5 +155,6 @@
 	.error {
 		margin-top: 2rem;
 		color: red;
+		text-align: center;
 	}
 </style>
