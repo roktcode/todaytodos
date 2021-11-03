@@ -16,7 +16,7 @@
 		try {
 			// const response = await fetch("http://localhost:3000/api/login", {
 			const response = await fetch(
-				"https://today-todos-api.herokuapp.com/api/login",
+				"https://today-todos-api.vercel.app/api/login",
 				{
 					method: "POST",
 					headers: {

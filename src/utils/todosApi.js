@@ -1,7 +1,7 @@
 // get Todos
 export async function loadTodos(token) {
 	try {
-		const response = await fetch("https://today-todos-api.herokuapp.com/api/todos", {
+		const response = await fetch("https://today-todos-api.vercel.app/api/todos", {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -18,7 +18,7 @@ export async function loadTodos(token) {
 // add Todo
 export async function addTodo(token, todoText) {
 	try {
-		const response = await fetch(" https://today-todos-api.herokuapp.com/api/todos", {
+		const response = await fetch(" https://today-todos-api.vercel.app/api/todos", {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -38,7 +38,7 @@ export async function addTodo(token, todoText) {
 // delete Todos
 export async function deleteTodo(token, todoId) {
 	try {
-		const response = await fetch(`https://today-todos-api.herokuapp.com/api/todos/${todoId}`, {
+		const response = await fetch(`https://today-todos-api.vercel.app/api/todos/${todoId}`, {
 			method: "DELETE",
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -54,7 +54,7 @@ export async function deleteTodo(token, todoId) {
 // toggle completed
 export async function toggleCompletedTodo(token, id, text, completed) {
 	try {
-		const response = await fetch(`https://today-todos-api.herokuapp.com/api/todos/${id}`, {
+		const response = await fetch(`https://today-todos-api.vercel.app/api/todos/${id}`, {
 			method: "PUT",
 			headers: {
 				Authorization: `Bearer ${token}`,

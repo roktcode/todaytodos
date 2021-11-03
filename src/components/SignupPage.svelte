@@ -24,7 +24,7 @@
 
 		try {
 			const response = await fetch(
-				"https://today-todos-api.herokuapp.com/api/signup",
+				"https://today-todos-api.vercel.app/api/signup",
 				{
 					method: "POST",
 					headers: {
