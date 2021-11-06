@@ -1,0 +1,21 @@
+<!-- <div class="stats-container">
+		<div class="stats-title">🚀 PROGRESS {Math.trunc($progress)}%</div>
+		<div class="stats">
+			<div class="total">{$todoListStore.length} TOTAL</div>
+			<div class="completed">
+				{completedTodos} ✅
+			</div>
+			<div class="pendinng">{pendingTodos} ⏳</div>
+		</div>
+	</div> -->
+
+
+
+	completedTodos = $todoListStore
+			.map((todo) => todo.completed)
+			.filter((c) => c).length;
+		progress.set(
+			$todoListStore.length > 0
+				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
+				: 100
+		);

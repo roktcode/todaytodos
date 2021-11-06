@@ -6,6 +6,11 @@
 	import { onMount } from "svelte";
 	import { tweened } from "svelte/motion";
 	import { expoOut } from "svelte/easing";
+
+	import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones } from "svelte-dnd-action";
+
+	overrideItemIdKeyNameBeforeInitialisingDndZones("_id");
+
 	import {
 		loadTodos,
 		addTodo,
@@ -17,7 +22,6 @@
 	let todoInputRef = null;
 
 	let completedTodos = 0;
-	let pendingTodos = 0;
 	let progress = tweened(0, {
 		duration: 300,
 		delay: 0,
@@ -67,31 +71,35 @@
 		);
 	}
 
+	async function setTodos() {
+		
+	}
+
+	function openModal(id) {
+		modalOpen = true;
+	}
+
 	$: {
 		completedTodos = $todoListStore
 			.map((todo) => todo.completed)
 			.filter((c) => c).length;
-		pendingTodos = $todoListStore.length - completedTodos;
 		progress.set(
 			$todoListStore.length > 0
 				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
 				: 100
 		);
 	}
+
+	function handleDndConsider(e) {
+		$todoListStore = e.detail.items;
+	}
+	function handleDndFinalize(e) {
+		$todoListStore = e.detail.items;
+		console.log($todoListStore);
+	}
 </script>
 
 <div class="container">
-	<!-- <div class="stats-container">
-		<div class="stats-title">🚀 PROGRESS {Math.trunc($progress)}%</div>
-		<div class="stats">
-			<div class="total">{$todoListStore.length} TOTAL</div>
-			<div class="completed">
-				{completedTodos} ✅
-			</div>
-			<div class="pendinng">{pendingTodos} ⏳</div>
-		</div>
-	</div> -->
-
 	<div class="add-todos">
 		<div class="todo-input">
 			<form on:submit|preventDefault={addNewTodo}>
@@ -104,17 +112,9 @@
 					maxlength="70"
 					placeholder="&#xf56b"
 					required
-					/>
+				/>
 			</form>
-			<div class="submit" on:click={addNewTodo}>
-				<!-- <input value="&#x2b" class="button" type="submit" on:click={addNewTodo}/> -->
-				<!-- <div class="button-div"> -->
-					<!-- <i class="fa-solid fa-circle-plus"></i> -->
-					<!-- ➕	 -->
-					<!-- <i class="fa-solid fa-square-plus"></i> -->
-				<!-- </div> -->
-				+
-			</div>
+			<div class="submit" on:click={addNewTodo}>+</div>
 		</div>
 	</div>
 
@@ -122,9 +122,13 @@
 		{#await getTodos()}
 			<div class="loading-todos">Loading todos...</div>
 		{:then _}
-			<ul>
+			<ul
+				use:dndzone={{ items: $todoListStore, flipDurationMs: 100 }}
+				on:consider={handleDndConsider}
+				on:finalize={handleDndFinalize}
+			>
 				{#each $todoListStore as { _id, text, completed } (_id)}
-					<li animate:flip in:fade out:fly={{ x: 100 }}>
+					<li animate:flip in:fade>
 						<div
 							class="content-container"
 							on:click={() => toggleCompleted(_id, text, completed)}
@@ -144,7 +148,14 @@
 							</div>
 						</div>
 						<div class="actions">
-							<button on:click={() => removeTodo(_id)}>Remove</button>
+							<div class="edit" on:click={() => {}}>
+								<!-- <Button>click me</Button> -->
+								<i class="fa-solid fa-pen" />
+							</div>
+							<div class="delete" on:click={() => removeTodo(_id)}>
+								<i class="fa-solid fa-minus" />
+							</div>
+							<!-- <button on:click={() => removeTodo(_id)}>Remove</button> -->
 						</div>
 					</li>
 				{/each}
@@ -154,6 +165,28 @@
 </div>
 
 <style>
+	/* Actions */
+
+	.actions {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: baseline;
+		font-family: FontAwesome;
+		gap: 1.5rem;
+	}
+
+	.delete,
+	.edit {
+		cursor: pointer;
+	}
+
+	.edit {
+		/* color: var(--li-completed-text-color); */
+	}
+
+	/* Actions */
+
 	.container {
 		padding: 0 1.5rem;
 		display: flex;
@@ -211,7 +244,6 @@
 	form {
 		flex-grow: 1;
 		border-bottom: 1px solid var(--input-border-color);
-
 	}
 
 	input {
@@ -228,13 +260,12 @@
 
 		padding-left: 4px;
 		padding-bottom: 4px;
-	
 	}
 
-	input:-webkit-search-cancel-button{
-    position:relative;
-    right:20px;    
-}
+	input:-webkit-search-cancel-button {
+		position: relative;
+		right: 20px;
+	}
 
 	input::placeholder {
 		opacity: 0.7;
@@ -268,16 +299,37 @@
 
 	.todo-list {
 		width: 100%;
+		max-height: 450px;
+		overflow-y: scroll;
+		padding-right: 1rem;
+
+		-ms-overflow-style: 3px;
+		scrollbar-width: 3px;
+	}
+
+	.todo-list::-webkit-scrollbar {
+		width: 3px;
+		background-color: #ddd;
+	}
+
+	.todo-list::-webkit-scrollbar-thumb {
+		border-radius: 50%;
+		background-color: #555;
+	}
+
+	.loading-todos {
+		direction: ltr;
 	}
 
 	ul {
 		padding: 0;
+		margin: 0;
 		list-style-position: inside;
 		width: 100%;
 	}
 
 	li {
-		cursor: pointer;
+		/* cursor: pointer; */
 		user-select: none;
 		font-weight: bold;
 		display: flex;
@@ -298,6 +350,7 @@
 		flex-grow: 1;
 		min-width: 0;
 		gap: 0.8rem;
+		cursor: pointer;
 	}
 
 	.content-prefix {
@@ -319,8 +372,7 @@
 		overflow-wrap: break-word;
 	}
 
-
-	li button {
+	/* li button {
 		margin: 0;
 		background: inherit;
 		border: 1px solid var(--li-action-color);
@@ -333,10 +385,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-	}
+	} */
 	.content.completed {
 		text-decoration: line-through;
-		/* text-decoration-style: double; */
 		font-weight: normal;
 		color: var(--li-completed-text-color);
 	}
@@ -363,8 +414,6 @@
 		li button {
 			font-size: 1rem;
 		}
-
-		
 	}
 
 	@media (min-width: 701px) {
