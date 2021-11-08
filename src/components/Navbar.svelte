@@ -2,19 +2,26 @@
 	import { authStore } from "../stores/authStore.js";
 	import ProgressBar from "@okrad/svelte-progressbar";
 	import todoListStore from "../stores/todoListStore.js";
+	import { tweened } from "svelte/motion";
 
 	let completedTodos;
-	let progress;
+	let progress = tweened(0);
 
 	$: {
 		completedTodos = $todoListStore
 			.map((todo) => todo.completed)
 			.filter((c) => c).length;
 
-		progress =
+		progress.set(
 			$todoListStore.length > 0
 				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
-				: 0;
+				: 0
+		);
+
+		// progress =
+		// 	$todoListStore.length > 0
+		// 		? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
+		// 		: 0;
 	}
 
 	function logout() {
@@ -41,27 +48,28 @@
 			{/if}
 		</div>
 
+		{#if $authStore.user}
 		<div class="stats-container">
 			<div id="stats">
 				<ProgressBar
 					series={[
 						{
-							perc: progress,
+							perc: $progress,
 							color: "#008080",
 						},
 					]}
 					bgColor="#444"
-					valueLabel={progress < 100 ? `PROGRESS: ${progress}%` : "ALL DONE 💪🏼"}
+					valueLabel={$progress < 100 ? `PROGRESS: ${Math.trunc($progress)}%` : "ALL DONE 💪🏼"}
 					labelColor="white"
 					height="40"
 					width="200"
 					ry={5}
 					rx={5}
-					textSize={110}
+					textSize={100}
 				/>
 			</div>
 		</div>
-	</div>
+	{/if}
 </nav>
 
 <style>
@@ -69,10 +77,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		/* background: #eee; */
 		background: var(--navbar-bg-color);
 		margin-bottom: 2rem;
-		/* box-shadow: 1px 2px 3px var(--navbar-box-shadow-color); */
 	}
 
 	.nav-container {
