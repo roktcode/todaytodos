@@ -6,8 +6,12 @@
 	import { onMount } from "svelte";
 	import { tweened } from "svelte/motion";
 	import { expoOut } from "svelte/easing";
+	import ProgressBar from "@okrad/svelte-progressbar";
 
-	import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones } from "svelte-dnd-action";
+	import {
+		dndzone,
+		overrideItemIdKeyNameBeforeInitialisingDndZones,
+	} from "svelte-dnd-action";
 
 	overrideItemIdKeyNameBeforeInitialisingDndZones("_id");
 
@@ -21,12 +25,8 @@
 	let todoInput = "";
 	let todoInputRef = null;
 
-	let completedTodos = 0;
-	let progress = tweened(0, {
-		duration: 300,
-		delay: 0,
-		easing: expoOut,
-	});
+	let completedTodos;
+	let progress;
 
 	onMount(() => {
 		todoInputRef.focus();
@@ -46,6 +46,7 @@
 
 		$todoListStore = [...$todoListStore, addedTodo];
 		todoInput = "";
+
 	}
 
 	async function removeTodo(id) {
@@ -71,24 +72,20 @@
 		);
 	}
 
-	async function setTodos() {
-		
-	}
-
 	function openModal(id) {
 		modalOpen = true;
 	}
 
-	$: {
-		completedTodos = $todoListStore
-			.map((todo) => todo.completed)
-			.filter((c) => c).length;
-		progress.set(
-			$todoListStore.length > 0
-				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
-				: 100
-		);
-	}
+	// $: {
+	// 	completedTodos = $todoListStore
+	// 		.map((todo) => todo.completed)
+	// 		.filter((c) => c).length;
+
+	// 	progress =
+	// 		$todoListStore.length > 0
+	// 			? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
+	// 			: 0;
+	// }
 
 	function handleDndConsider(e) {
 		$todoListStore = e.detail.items;
@@ -100,6 +97,23 @@
 </script>
 
 <div class="container">
+	<!-- <div class="stats-container">
+		<div id="stats">
+			<ProgressBar
+				series={[
+					{
+						perc: progress,
+						color: "#008080",
+					},
+				]}
+				bgColor="#444"
+				valueLabel={progress < 100 ? `PROGRESS: ${progress}%` : "ALL DONE 💪🏼"}
+				labelColor="white"
+				height="40"
+				showProgressValue={true}
+			/>
+		</div>
+	</div> -->
 	<div class="add-todos">
 		<div class="todo-input">
 			<form on:submit|preventDefault={addNewTodo}>
@@ -122,13 +136,9 @@
 		{#await getTodos()}
 			<div class="loading-todos">Loading todos...</div>
 		{:then _}
-			<ul
-				use:dndzone={{ items: $todoListStore, flipDurationMs: 100 }}
-				on:consider={handleDndConsider}
-				on:finalize={handleDndFinalize}
-			>
+			<ul>
 				{#each $todoListStore as { _id, text, completed } (_id)}
-					<li animate:flip in:fade>
+					<li animate:flip in:fade out:fly={{x: 200}}>
 						<div
 							class="content-container"
 							on:click={() => toggleCompleted(_id, text, completed)}
@@ -148,10 +158,9 @@
 							</div>
 						</div>
 						<div class="actions">
-							<div class="edit" on:click={() => {}}>
-								<!-- <Button>click me</Button> -->
+							<!-- <div class="edit" on:click={() => {}}>
 								<i class="fa-solid fa-pen" />
-							</div>
+							</div> -->
 							<div class="delete" on:click={() => removeTodo(_id)}>
 								<i class="fa-solid fa-minus" />
 							</div>
@@ -197,7 +206,7 @@
 		margin: 0 auto;
 	}
 
-	.stats-container {
+	/* .stats-container {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -212,9 +221,9 @@
 		max-width: 250px;
 		border: var(--stats-container-border);
 		box-shadow: var(--stats-container-box-shadow);
-	}
+	} */
 
-	.stats-title {
+	/* .stats-title {
 		display: flex;
 		justify-content: center;
 		font-weight: bold;
@@ -227,7 +236,7 @@
 		flex-direction: row;
 		gap: 2rem;
 		justify-content: center;
-	}
+	} */
 
 	.add-todos {
 		margin: 1rem 0;
@@ -299,8 +308,8 @@
 
 	.todo-list {
 		width: 100%;
-		max-height: 450px;
-		overflow-y: scroll;
+		max-height: 270px;
+		overflow-y: auto;
 		padding-right: 1rem;
 
 		-ms-overflow-style: 3px;
@@ -372,20 +381,6 @@
 		overflow-wrap: break-word;
 	}
 
-	/* li button {
-		margin: 0;
-		background: inherit;
-		border: 1px solid var(--li-action-color);
-		border-radius: 3px;
-		color: var(--li-action-color);
-		outline: none;
-		transition: all 0.2s;
-		font-size: 0.8rem;
-		padding: 0.3rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	} */
 	.content.completed {
 		text-decoration: line-through;
 		font-weight: normal;
@@ -463,6 +458,10 @@
 			width: 40px;
 			height: 40px;
 		}
+
+		.todo-list {
+		max-height: 380px;
+	}
 	}
 
 	@media (hover: hover) {
