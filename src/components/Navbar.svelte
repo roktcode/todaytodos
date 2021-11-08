@@ -57,7 +57,7 @@
 					width="200"
 					ry={5}
 					rx={5}
-					textSize={120}
+					textSize={110}
 				/>
 			</div>
 		</div>
