@@ -4,16 +4,6 @@
 	import { flip } from "svelte/animate";
 	import { fade, fly } from "svelte/transition";
 	import { onMount } from "svelte";
-	import { tweened } from "svelte/motion";
-	import { expoOut } from "svelte/easing";
-	import ProgressBar from "@okrad/svelte-progressbar";
-
-	import {
-		dndzone,
-		overrideItemIdKeyNameBeforeInitialisingDndZones,
-	} from "svelte-dnd-action";
-
-	overrideItemIdKeyNameBeforeInitialisingDndZones("_id");
 
 	import {
 		loadTodos,
@@ -24,9 +14,6 @@
 
 	let todoInput = "";
 	let todoInputRef = null;
-
-	let completedTodos;
-	let progress;
 
 	onMount(() => {
 		todoInputRef.focus();
@@ -46,7 +33,7 @@
 
 		$todoListStore = [...$todoListStore, addedTodo];
 		todoInput = "";
-
+		todoInputRef.focus()
 	}
 
 	async function removeTodo(id) {
@@ -71,62 +58,34 @@
 			todo._id !== id ? todo : updatedTodo
 		);
 	}
-
-	function openModal(id) {
-		modalOpen = true;
-	}
-
-	// $: {
-	// 	completedTodos = $todoListStore
-	// 		.map((todo) => todo.completed)
-	// 		.filter((c) => c).length;
-
-	// 	progress =
-	// 		$todoListStore.length > 0
-	// 			? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
-	// 			: 0;
-	// }
-
-	function handleDndConsider(e) {
-		$todoListStore = e.detail.items;
-	}
-	function handleDndFinalize(e) {
-		$todoListStore = e.detail.items;
-		console.log($todoListStore);
-	}
 </script>
 
 <div class="container">
-	<!-- <div class="stats-container">
-		<div id="stats">
-			<ProgressBar
-				series={[
-					{
-						perc: progress,
-						color: "#008080",
-					},
-				]}
-				bgColor="#444"
-				valueLabel={progress < 100 ? `PROGRESS: ${progress}%` : "ALL DONE 💪🏼"}
-				labelColor="white"
-				height="40"
-				showProgressValue={true}
-			/>
-		</div>
-	</div> -->
 	<div class="add-todos">
 		<div class="todo-input">
 			<form on:submit|preventDefault={addNewTodo}>
-				<input
-					type="text"
-					id="addTodo"
-					bind:this={todoInputRef}
-					bind:value={todoInput}
-					autocomplete="off"
-					maxlength="70"
-					placeholder="&#xf56b"
-					required
-				/>
+				<div class="input-prefix">
+					{#if todoInput !== ""}
+							<i class="fa-solid fa-eraser clear-input" on:click={() => {
+								todoInput = ''
+								todoInputRef.focus()
+							}}/>
+					{:else}
+						<i class="fa-solid fa-feather" />
+					{/if}
+				</div>
+				<div class="input-content">
+					<input
+						type="text"
+						id="addTodo"
+						bind:this={todoInputRef}
+						bind:value={todoInput}
+						autocomplete="off"
+						maxlength="70"
+						required
+					/>
+					<!-- placeholder="&#xf56b" -->
+				</div>
 			</form>
 			<div class="submit" on:click={addNewTodo}>+</div>
 		</div>
@@ -138,33 +97,26 @@
 		{:then _}
 			<ul>
 				{#each $todoListStore as { _id, text, completed } (_id)}
-					<li animate:flip in:fade out:fly={{x: 200}}>
+					<li animate:flip in:fade out:fly={{ x: 200 }}>
 						<div
 							class="content-container"
 							on:click={() => toggleCompleted(_id, text, completed)}
 						>
-							<div class="content-prefix">
-								{#if completed}
+							{#if completed}
+								<div class="content-prefix">
 									<!-- <i class="fa-solid fa-check"></i> -->
 									✅
 									<!-- <i class=""></i> -->
-								{:else}
-									<!-- <i class="fa-solid fa-hourglass"></i> -->
-									⏳
-								{/if}
-							</div>
+								</div>
+							{/if}
 							<div class="content" class:completed>
 								<p>{text}</p>
 							</div>
 						</div>
 						<div class="actions">
-							<!-- <div class="edit" on:click={() => {}}>
-								<i class="fa-solid fa-pen" />
-							</div> -->
 							<div class="delete" on:click={() => removeTodo(_id)}>
 								<i class="fa-solid fa-minus" />
 							</div>
-							<!-- <button on:click={() => removeTodo(_id)}>Remove</button> -->
 						</div>
 					</li>
 				{/each}
@@ -174,8 +126,6 @@
 </div>
 
 <style>
-	/* Actions */
-
 	.actions {
 		display: flex;
 		flex-direction: row;
@@ -185,16 +135,13 @@
 		gap: 1.5rem;
 	}
 
-	.delete,
-	.edit {
+	.delete {
 		cursor: pointer;
 	}
 
-	.edit {
-		/* color: var(--li-completed-text-color); */
+	.clear-input{
+		cursor: pointer;
 	}
-
-	/* Actions */
 
 	.container {
 		padding: 0 1.5rem;
@@ -206,38 +153,6 @@
 		margin: 0 auto;
 	}
 
-	/* .stats-container {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: stretch;
-		padding: 0.5rem;
-		margin: 1rem auto;
-		margin-bottom: 2rem;
-		color: var(--stats-text-color);
-		background: var(--stats-bg-color);
-		border-radius: var(--stats-border-radius);
-		gap: 1rem;
-		max-width: 250px;
-		border: var(--stats-container-border);
-		box-shadow: var(--stats-container-box-shadow);
-	} */
-
-	/* .stats-title {
-		display: flex;
-		justify-content: center;
-		font-weight: bold;
-		font-size: 1rem;
-		color: white;
-	}
-
-	.stats {
-		display: flex;
-		flex-direction: row;
-		gap: 2rem;
-		justify-content: center;
-	} */
-
 	.add-todos {
 		margin: 1rem 0;
 		width: 100%;
@@ -248,11 +163,28 @@
 		align-items: center;
 		padding-bottom: 8px;
 		gap: 10px;
+		/* padding-left: 1rem; */
 	}
 
 	form {
 		flex-grow: 1;
-		border-bottom: 1px solid var(--input-border-color);
+		/* border-bottom: 1px solid var(--input-border-color); */
+		display: flex;
+		justify-content: stretch;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.input-prefix {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-family: FontAwesome;
+		transform: scaleX(-1);
+	}
+
+	.input-content {
+		flex-grow: 1;
 	}
 
 	input {
@@ -266,9 +198,10 @@
 		caret-color: var(--input-text-indicator-color);
 		color: var(--input-text-color);
 		font-family: "Noto Sans Mono", monospace;
-
-		padding-left: 4px;
+		/* padding-left: 4px; */
 		padding-bottom: 4px;
+		/* text-indent: 2rem; */
+		border-bottom: 1px solid var(--input-border-color);
 	}
 
 	input:-webkit-search-cancel-button {
@@ -311,19 +244,20 @@
 		max-height: 270px;
 		overflow-y: auto;
 		padding-right: 1rem;
-
 		-ms-overflow-style: 3px;
 		scrollbar-width: 3px;
+		direction: rtl;
+		padding-left: 1rem;
 	}
 
 	.todo-list::-webkit-scrollbar {
-		width: 3px;
+		width: 2px;
 		background-color: #ddd;
 	}
 
 	.todo-list::-webkit-scrollbar-thumb {
-		border-radius: 50%;
-		background-color: #555;
+		border-radius: 5px;
+		background-color: #aaa;
 	}
 
 	.loading-todos {
@@ -335,10 +269,10 @@
 		margin: 0;
 		list-style-position: inside;
 		width: 100%;
+		direction: ltr;
 	}
 
 	li {
-		/* cursor: pointer; */
 		user-select: none;
 		font-weight: bold;
 		display: flex;
@@ -360,11 +294,10 @@
 		min-width: 0;
 		gap: 0.8rem;
 		cursor: pointer;
+		padding: 0 1rem;
 	}
 
 	.content-prefix {
-		min-width: 20px;
-		min-height: 20px;
 		color: var(--li-completed-text-color);
 		display: flex;
 		justify-content: center;
@@ -391,10 +324,6 @@
 		.container {
 			max-width: 450px;
 		}
-
-		li button {
-			font-size: 0.9rem;
-		}
 	}
 
 	@media (min-width: 601px) and (max-width: 700px) {
@@ -405,19 +334,11 @@
 		input {
 			font-size: 1.4rem;
 		}
-
-		li button {
-			font-size: 1rem;
-		}
 	}
 
 	@media (min-width: 701px) {
 		.container {
 			max-width: 600px;
-		}
-
-		li button {
-			font-size: 1rem;
 		}
 
 		input {
@@ -432,12 +353,7 @@
 			display: flex;
 			flex-direction: row;
 			align-items: center;
-			/* justify-content: ; */
 		}
-
-		/* .form {
-			flex-grow: 1;
-		} */
 	}
 
 	@media (min-width: 601px) {
@@ -450,30 +366,22 @@
 			gap: 1rem;
 		}
 
-		.stats-container {
-			padding: 1rem;
-		}
-
 		.submit {
 			width: 40px;
 			height: 40px;
 		}
 
 		.todo-list {
-		max-height: 380px;
-	}
+			max-height: 380px;
+		}
 	}
 
 	@media (hover: hover) {
-		/* .todo-input button:hover {
-			background: var(--input-button-hover-color);
-			border-color: var(--input-button-hover-border-color);
-		} */
-
 		.content-container:hover {
 			background: var(--li-hover-color);
 			box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
 			color: var(--li-hover-text-color);
+			border-radius: 5px;
 		}
 
 		.content:hover {
@@ -483,14 +391,6 @@
 		.content.completed:hover {
 			text-decoration: none;
 			color: var(--li-completed-hover-text-color);
-		}
-
-		li button:hover {
-			opacity: 0.9;
-			cursor: pointer;
-			background: var(--li-action-color);
-			color: var(--li-action-hover-text-color);
-			border-color: var(--bg-color);
 		}
 
 		.submit:hover {
