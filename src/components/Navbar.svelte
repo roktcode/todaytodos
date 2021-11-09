@@ -17,11 +17,6 @@
 				? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
 				: 0
 		);
-
-		// progress =
-		// 	$todoListStore.length > 0
-		// 		? Math.trunc((completedTodos / $todoListStore.length) * 100) || 0
-		// 		: 0;
 	}
 
 	function logout() {

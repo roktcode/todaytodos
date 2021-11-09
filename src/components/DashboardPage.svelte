@@ -33,7 +33,7 @@
 
 		$todoListStore = [...$todoListStore, addedTodo];
 		todoInput = "";
-		todoInputRef.focus()
+		todoInputRef.focus();
 	}
 
 	async function removeTodo(id) {
@@ -66,10 +66,13 @@
 			<form on:submit|preventDefault={addNewTodo}>
 				<div class="input-prefix">
 					{#if todoInput !== ""}
-							<i class="fa-solid fa-eraser clear-input" on:click={() => {
-								todoInput = ''
-								todoInputRef.focus()
-							}}/>
+						<i
+							class="fa-solid fa-eraser clear-input"
+							on:click={() => {
+								todoInput = "";
+								todoInputRef.focus();
+							}}
+						/>
 					{:else}
 						<i class="fa-solid fa-feather" />
 					{/if}
@@ -97,7 +100,7 @@
 		{:then _}
 			<ul>
 				{#each $todoListStore as { _id, text, completed } (_id)}
-					<li animate:flip in:fade out:fly={{ x: 200 }}>
+					<li class:completed animate:flip in:fade out:fly={{ x: 200 }}>
 						<div
 							class="content-container"
 							on:click={() => toggleCompleted(_id, text, completed)}
@@ -139,7 +142,7 @@
 		cursor: pointer;
 	}
 
-	.clear-input{
+	.clear-input {
 		cursor: pointer;
 	}
 
@@ -164,11 +167,12 @@
 		padding-bottom: 8px;
 		gap: 10px;
 		/* padding-left: 1rem; */
+		/* border-bottom: 1px solid var(--input-border-color); */
 	}
 
 	form {
 		flex-grow: 1;
-		/* border-bottom: 1px solid var(--input-border-color); */
+		border-bottom: 1px solid var(--input-border-color);
 		display: flex;
 		justify-content: stretch;
 		align-items: center;
@@ -201,12 +205,7 @@
 		/* padding-left: 4px; */
 		padding-bottom: 4px;
 		/* text-indent: 2rem; */
-		border-bottom: 1px solid var(--input-border-color);
-	}
-
-	input:-webkit-search-cancel-button {
-		position: relative;
-		right: 20px;
+		/* border-bottom: 1px solid var(--input-border-color); */
 	}
 
 	input::placeholder {
@@ -241,17 +240,17 @@
 
 	.todo-list {
 		width: 100%;
-		max-height: 270px;
+		max-height: 280px;
 		overflow-y: auto;
 		padding-right: 1rem;
 		-ms-overflow-style: 3px;
 		scrollbar-width: 3px;
-		direction: rtl;
-		padding-left: 1rem;
+		/* direction: rtl; */
+		/* padding-right: 1rem; */
 	}
 
 	.todo-list::-webkit-scrollbar {
-		width: 2px;
+		width: 6px;
 		background-color: #ddd;
 	}
 
@@ -269,12 +268,12 @@
 		margin: 0;
 		list-style-position: inside;
 		width: 100%;
-		direction: ltr;
+		/* direction: ltr; */
 	}
 
 	li {
 		user-select: none;
-		font-weight: bold;
+		font-weight: 600;
 		display: flex;
 		justify-content: stretch;
 		align-items: center;
@@ -282,6 +281,13 @@
 		border-radius: 5px;
 		transition: all 0.2s;
 		margin-bottom: 1rem;
+		/* background: var(--li-hover-color); */
+		background: #dedede;
+		padding: 0 0.5rem;
+	}
+
+	li.completed {
+		background: transparent;
 	}
 
 	.content-container {
@@ -294,7 +300,7 @@
 		min-width: 0;
 		gap: 0.8rem;
 		cursor: pointer;
-		padding: 0 1rem;
+		/* padding: 0 1rem; */
 	}
 
 	.content-prefix {
@@ -318,6 +324,10 @@
 		text-decoration: line-through;
 		font-weight: normal;
 		color: var(--li-completed-text-color);
+	}
+
+	.actions {
+		display: none;
 	}
 
 	@media (min-width: 400px) and (max-width: 600px) {
@@ -364,6 +374,7 @@
 
 		li {
 			gap: 1rem;
+			padding: 0 1rem;
 		}
 
 		.submit {
@@ -372,16 +383,22 @@
 		}
 
 		.todo-list {
-			max-height: 380px;
+			max-height: 500px;
+			padding-bottom: 2rem;
+			margin-top: 1rem;
+		}
+
+		.actions {
+			display: block;
 		}
 	}
 
 	@media (hover: hover) {
-		.content-container:hover {
-			background: var(--li-hover-color);
-			box-shadow: 1px 2px 3px var(--li-hover-box-shadow-color);
+		li:hover {
+			background: #ccc;
+			box-shadow: 1px 2px 6px var(--li-hover-box-shadow-color);
 			color: var(--li-hover-text-color);
-			border-radius: 5px;
+			/* border-radius: 5px; */
 		}
 
 		.content:hover {
