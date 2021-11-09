@@ -14,6 +14,7 @@
 
 	let todoInput = "";
 	let todoInputRef = null;
+	
 
 	onMount(() => {
 		todoInputRef.focus();
