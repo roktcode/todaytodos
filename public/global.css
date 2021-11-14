@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;500;600;700&display=swap");
 
 html[data-theme="light"] {
 	--bg-color: #fefefe;
@@ -17,22 +17,17 @@ html[data-theme="light"] {
 	--input-button-border: 3px solid black;
 	--input-border-color: black;
 	--input-border: none;
-	
-	
-	
+
 	--input-text-indicator-color: black;
 	--input-placeholder-text-color: #ddd;
 	--input-text-color: black;
-
 
 	--stats-bg-color: black;
 	--stats-text-color: var(--bg-color);
 	/* --stats-container-border: 1px solid var(--bg-color); */
 	--stats-border-radius: 5px;
-	--stats-container-box-shadow: 1px 2px 3px #111; 
-	
-	
-	
+	--stats-container-box-shadow: 1px 2px 3px #111;
+
 	--li-hover-text-color: rgb(46, 53, 53);
 	--li-completed-hover-text-color: var(--text-color);
 	--footer-link-color: blue;
@@ -92,7 +87,8 @@ body {
 	color: var(--text-color);
 	display: grid;
 	grid-template-rows: auto 1fr auto;
-	background: url(https://images.pexels.com/photos/9965389/pexels-photo-9965389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1706&w=1280);
+	/* background: url(https://images.pexels.com/photos/9965389/pexels-photo-9965389.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1706&w=1280); */
+	background: url(so-white.png);
 	background-size: fit;
 }
 
@@ -150,8 +146,10 @@ button:focus {
 
 i {
 	font-style: normal;
+	font-family: FontAwesome;
 }
-input, button {
+input,
+button {
 	font-family: inherit;
 }
 

@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@okrad/svelte-progressbar": "^1.11.3",
+    "long-press-event": "^2.4.4",
     "sirv-cli": "^1.0.0",
     "svelte-routing": "^1.6.0",
     "svelte-simple-modal": "^1.0.3",

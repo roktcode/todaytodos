@@ -14,10 +14,20 @@
 
 	let todoInput = "";
 	let todoInputRef = null;
-	
+	let buttonAddTodoRef = null;
+	let todoListRef = null;
 
 	onMount(() => {
 		todoInputRef.focus();
+
+		// buttonAddTodoRef.addEventListener("longpress", function (e) {
+		// 	console.log("long live us");
+		// });
+
+		// todoListRef.addEventListener("longpress", (e) => {
+		// 	// console.log("Hello todoList");
+		// 	console.log(e.target);
+		// });
 	});
 
 	async function getTodos() {
@@ -91,21 +101,31 @@
 					<!-- placeholder="&#xf56b" -->
 				</div>
 			</form>
-			<div class="submit" on:click={addNewTodo}>+</div>
+			<div
+				class="submit"
+				on:click={addNewTodo}
+				bind:this={buttonAddTodoRef}
+				data-long-press-delay="200"
+			>
+				+
+			</div>
 		</div>
 	</div>
 
-	<div class="todo-list">
+	<div class="todo-list" bind:this={todoListRef} data-long-press-delay="300">
 		{#await getTodos()}
 			<div class="loading-todos">Loading todos...</div>
 		{:then _}
 			<ul>
 				{#each $todoListStore as { _id, text, completed } (_id)}
-					<li class:completed animate:flip in:fade out:fly={{ x: 200 }}>
-						<div
-							class="content-container"
-							on:click={() => toggleCompleted(_id, text, completed)}
-						>
+					<li
+						class:completed
+						animate:flip
+						in:fade
+						out:fly={{ x: 200 }}
+						on:longpress={() => console.log("LI pressed")}
+					>
+						<div class="content-container">
 							{#if completed}
 								<div class="content-prefix">
 									<!-- <i class="fa-solid fa-check"></i> -->
@@ -118,10 +138,24 @@
 							</div>
 						</div>
 						<div class="actions">
+							<div
+								class="edit"
+								on:click={() => toggleCompleted(_id, text, completed)}
+							>
+								<!-- <i class="fa-solid fa-trash" /> -->
+								<i class="fa-solid fa-check" />
+							</div>
 							<div class="delete" on:click={() => removeTodo(_id)}>
-								<i class="fa-solid fa-minus" />
+								<!-- <i class="fa-solid fa-minus" /> -->
+								<!-- <i class="fa-solid fa-trash"></i> -->
+								<i class="fa-solid fa-trash" />
+								<!-- DELETE -->
 							</div>
 						</div>
+
+						<!-- modal start -->
+
+						<!-- modal end -->
 					</li>
 				{/each}
 			</ul>
@@ -134,13 +168,22 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		align-items: baseline;
-		font-family: FontAwesome;
-		gap: 1.5rem;
+		/* align-items: baseline; */
+		gap: 2rem;
+		display: none;
+		padding: 0 10px;
 	}
 
+	.edit,
 	.delete {
 		cursor: pointer;
+		color: teal;
+		/* border: 1px solid teal; */
+		/* padding: 1rem; */
+		transition: background 0.15s;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.clear-input {
@@ -241,16 +284,16 @@
 
 	.todo-list {
 		width: 100%;
-		max-height: 280px;
-		overflow-y: auto;
-		padding-right: 1rem;
-		-ms-overflow-style: 3px;
-		scrollbar-width: 3px;
+		/* max-height: 280px; */
+		/* overflow-y: auto; */
+		/* padding-right: 1rem; */
+		/* -ms-overflow-style: 3px; */
+		/* scrollbar-width: 3px; */
 		/* direction: rtl; */
 		/* padding-right: 1rem; */
 	}
 
-	.todo-list::-webkit-scrollbar {
+	/* .todo-list::-webkit-scrollbar {
 		width: 6px;
 		background-color: #ddd;
 	}
@@ -258,7 +301,7 @@
 	.todo-list::-webkit-scrollbar-thumb {
 		border-radius: 5px;
 		background-color: #aaa;
-	}
+	} */
 
 	.loading-todos {
 		direction: ltr;
@@ -283,8 +326,11 @@
 		transition: all 0.2s;
 		margin-bottom: 1rem;
 		/* background: var(--li-hover-color); */
-		background: #dedede;
-		padding: 0 0.5rem;
+		/* background: #dedede; */
+		/* background: #333; */
+		/* color: white; */
+		/* padding: 0 0.5rem; */
+		border: 1px solid transparent;
 	}
 
 	li.completed {
@@ -300,7 +346,7 @@
 		flex-grow: 1;
 		min-width: 0;
 		gap: 0.8rem;
-		cursor: pointer;
+		/* cursor: pointer; */
 		/* padding: 0 1rem; */
 	}
 
@@ -327,10 +373,6 @@
 		color: var(--li-completed-text-color);
 	}
 
-	.actions {
-		display: none;
-	}
-
 	@media (min-width: 400px) and (max-width: 600px) {
 		.container {
 			max-width: 450px;
@@ -349,7 +391,7 @@
 
 	@media (min-width: 701px) {
 		.container {
-			max-width: 600px;
+			max-width: 650px;
 		}
 
 		input {
@@ -375,7 +417,7 @@
 
 		li {
 			gap: 1rem;
-			padding: 0 1rem;
+			/* padding: 0 1rem; */
 		}
 
 		.submit {
@@ -384,37 +426,51 @@
 		}
 
 		.todo-list {
-			max-height: 500px;
+			/* max-height: 500px; */
 			padding-bottom: 2rem;
 			margin-top: 1rem;
 		}
 
-		.actions {
+		/* .actions {
 			display: block;
-		}
+		} */
 	}
 
 	@media (hover: hover) {
-		li:hover {
-			background: #ccc;
-			box-shadow: 1px 2px 6px var(--li-hover-box-shadow-color);
-			color: var(--li-hover-text-color);
-			/* border-radius: 5px; */
-		}
-
-		.content:hover {
+		/* .content:hover {
 			text-decoration: line-through;
-		}
+			text-decoration-thickness: 3px;
+			text-decoration-color: teal;
+			font-weight: 600;
+		} */
 
-		.content.completed:hover {
+		/* .content.completed:hover {
 			text-decoration: none;
 			color: var(--li-completed-hover-text-color);
-		}
+		} */
 
 		.submit:hover {
 			background-color: black;
 			color: white;
 			border: 1px solid transparent;
+		}
+
+		li:hover .actions {
+			display: flex;
+		}
+
+		li:hover {
+			border: 1px solid rgba(0, 128, 128, 0.8);
+		}
+
+		i {
+			font-size: 1.5rem;
+		}
+
+		.edit:hover,
+		.delete:hover {
+			/* background: teal; */
+			color: rgba(0, 128, 128, 0.8);
 		}
 	}
 </style>

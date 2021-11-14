@@ -72,7 +72,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: var(--navbar-bg-color);
+		/* background: var(--navbar-bg-color); */
 		margin-bottom: 2rem;
 	}
 
